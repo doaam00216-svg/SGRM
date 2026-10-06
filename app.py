@@ -1,143 +1,442 @@
 import streamlit as st
 
-st.title("EEHC GIS Rollout Strategy")
+# 1. Page Configuration
+st.set_page_config(
+    page_title="EEHC Smart Grid Roadmap Dashboard",
+    page_icon="⚡",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# Define tabs for the rollout timeline
-tab_short, tab_medium, tab_long = st.tabs([
-    "Short-Term (Jan 2026 – Jun 2027)", 
-    "Medium-Term (Jun 2027 – May 2030)", 
-    "Long-Term (May 2030+)"
-])
+# 2. Custom CSS Styles
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #F8FAFC;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .top-banner {
+        background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+        border-radius: 16px;
+        padding: 24px 32px;
+        color: white;
+        margin-bottom: 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    .top-banner h1 {
+        color: #FFFFFF !important;
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin: 0;
+    }
+    .top-banner p {
+        color: #94A3B8;
+        font-size: 1.05rem;
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+    .domain-header {
+        border-radius: 12px 12px 0 0;
+        padding: 12px 14px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+    }
+    .dh-1 { background: #DC2626; }
+    .dh-2 { background: #0284C7; }
+    .dh-3 { background: #D97706; }
+    .dh-4 { background: #B91C1C; }
+    .dh-5 { background: #15803D; }
 
-# GitHub raw URL prefix (Replace with your actual GitHub username and repository)
-GITHUB_BASE_URL = "https://raw.githubusercontent.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPOSITORY_NAME>/main/"
+    .benefit-card {
+        background: white;
+        border: 1px solid #E2E8F0;
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+    }
+    .benefit-code {
+        font-weight: 800;
+        font-size: 1rem;
+        color: #D9381E;
+    }
+    .benefit-title {
+        font-size: 0.85rem;
+        color: #334155;
+        font-weight: 600;
+    }
+    .gis-highlight {
+        background: #EFF6FF;
+        border: 2px solid #2563EB !important;
+        border-radius: 8px;
+        padding: 4px;
+        margin-bottom: 8px;
+    }
+    .horizon-box {
+        background: white;
+        border-left: 6px solid #2563EB;
+        padding: 18px 24px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+    .image-caption-card {
+        background: #F1F5F9;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-top: 8px;
+        font-size: 0.85rem;
+        color: #475569;
+        border-left: 3px solid #0EA5E9;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# ==========================================
-# 1. SHORT-TERM TAB
-# ==========================================
-with tab_short:
-    st.header("Short-Term: Central GIS Foundation & Network Records")
-    
-    st.subheader("1. Asset Record Concept Map")
-    st.image(
-        GITHUB_BASE_URL + "01_asset_record.png", 
-        caption="Red medium-voltage grid topology map with asset attribute records", 
-        use_container_width=True
-    )
-    
-    st.subheader("2. Smouha GIS Web Interface")
-    st.image(
-        GITHUB_BASE_URL + "02_smouha_web_gis.png", 
-        caption="OpenStreetMap vector view showing kiosk asset details on Victor Emmanuel III St.", 
-        use_container_width=True
-    )
-    
-    st.subheader("3. MV Network Drawing & Acceptance Map")
-    st.image(
-        GITHUB_BASE_URL + "03_mv_network_drawing.png", 
-        caption="GIS mapping canvas with MV network nodes along Mohamed Abu El Fetouh Hassab St.", 
-        use_container_width=True
-    )
-    
-    st.subheader("4. GIS Rollout Monitoring Dashboard")
-    st.image(
-        GITHUB_BASE_URL + "04_rollout_monitoring.png", 
-        caption="City-wide feeder acceptance tracking across Capture, Verify, Approve, and Publish stages", 
-        use_container_width=True
-    )
-    
-    st.subheader("5. Alexandria Regional Distribution Network Map")
-    st.image(
-        GITHUB_BASE_URL + "05_alexandria_network_map.png", 
-        caption="Overview of Alexandria's regional electricity distribution network (منطقة الإسكندرية)", 
-        use_container_width=True
-    )
+# 3. Roadmap Data
+DOMAINS = [
+    {
+        "id": 1,
+        "title": "1. POLICY AND REGULATORY SUPPORT",
+        "count": "4 PROJECTS",
+        "header_class": "dh-1",
+        "projects": [
+            {"code": "PS1", "name": "Policy and regulatory review", "type": "support"},
+            {"code": "PS2", "name": "Technical standards and regulation", "type": "support"},
+            {"code": "PS3", "name": "Privacy and customer data ownership", "type": "support"},
+            {"code": "PS4", "name": "Cybersecurity", "type": "support"}
+        ]
+    },
+    {
+        "id": 2,
+        "title": "2. ORGANIZATIONAL SUPPORT",
+        "count": "4 PROJECTS",
+        "header_class": "dh-2",
+        "projects": [
+            {"code": "OS1", "name": "Business goals and use cases", "type": "support"},
+            {"code": "OS2", "name": "Organizational KPIs", "type": "support"},
+            {"code": "OS3", "name": "Asset management strategy", "type": "support"},
+            {"code": "OS4", "name": "Smart grid governance", "type": "support"}
+        ]
+    },
+    {
+        "id": 3,
+        "title": "3. INFRASTRUCTURE",
+        "count": "6 PROJECTS",
+        "header_class": "dh-3",
+        "projects": [
+            {"code": "IF1", "name": "Smart meters: commercial and industrial", "type": "direct"},
+            {"code": "IF2", "name": "Asset management design and implementation", "type": "support", "active": True, "tag": "Includes GIS"},
+            {"code": "IF3", "name": "Smart meters: residential >200 kWh/month", "type": "direct"},
+            {"code": "IF4", "name": "Asset management and monitoring", "type": "direct"},
+            {"code": "IF5", "name": "Smart Meter Plus: residential <200 kWh/month", "type": "direct"},
+            {"code": "IF6", "name": "Phasor measurement units", "type": "direct"}
+        ]
+    },
+    {
+        "id": 4,
+        "title": "4. TECHNOLOGY",
+        "count": "7 PROJECTS",
+        "header_class": "dh-4",
+        "projects": [
+            {"code": "TE1", "name": "Technology evaluation and selection", "type": "support"},
+            {"code": "TE2", "name": "Integrated solution selection", "type": "support"},
+            {"code": "TE3", "name": "Smart meter analytics", "type": "direct"},
+            {"code": "TE4", "name": "PV and EV monitoring", "type": "direct"},
+            {"code": "TE5", "name": "Demand response", "type": "direct"},
+            {"code": "TE6", "name": "Demand-side management pilot", "type": "direct"},
+            {"code": "TE7", "name": "Energy storage pilots", "type": "direct"}
+        ]
+    },
+    {
+        "id": 5,
+        "title": "5. CUSTOMER ENGAGEMENT & ENV.",
+        "count": "5 PROJECTS",
+        "header_class": "dh-5",
+        "projects": [
+            {"code": "C1", "name": "Green DISCO", "type": "direct"},
+            {"code": "C2", "name": "AMI lessons learned", "type": "support"},
+            {"code": "C3", "name": "Buy REN@DISCO", "type": "direct"},
+            {"code": "C4", "name": "Advanced smart meter analytics", "type": "direct"},
+            {"code": "C5", "name": "Interactive energy applications", "type": "direct"}
+        ]
+    }
+]
 
-# ==========================================
-# 2. MEDIUM-TERM TAB
-# ==========================================
-with tab_medium:
-    st.header("Medium-Term: Coverage & Operating Applications")
-    
-    st.subheader("6. Low-Voltage Network Expansion (Wall Boxes)")
-    st.image(
-        GITHUB_BASE_URL + "06_lv_network_wallboxes.png", 
-        caption="Street-level mapping of LV wall distribution boxes along Qanal El Mahmoudeya St.", 
-        use_container_width=True
-    )
-    
-    st.subheader("7. Asset Management & Maintenance Interface")
-    st.image(
-        GITHUB_BASE_URL + "07_asset_management_transformer.png", 
-        caption="Interactive GIS view of transformer asset parameters (ELMACO 800 KVA)", 
-        use_container_width=True
-    )
-    
-    st.subheader("8. Fleet & Field Workforce Management")
-    st.image(
-        GITHUB_BASE_URL + "08_field_workforce_fleet.png", 
-        caption="Real-time field vehicle dispatching and work location routing", 
-        use_container_width=True
-    )
-    
-    st.subheader("9. Outage Management System (OMS)")
-    st.image(
-        GITHUB_BASE_URL + "09_outage_management.png", 
-        caption="Fault trace schematic isolating impacted customer areas and feeder switches", 
-        use_container_width=True
-    )
-    
-    st.subheader("10. Loss Analysis & Energy Cost Visibility")
-    st.image(
-        GITHUB_BASE_URL + "10_loss_analysis.png", 
-        caption="Metered boundary zones and transformer imbalance investigation areas", 
-        use_container_width=True
-    )
-    
-    st.subheader("11. Renewable & EV Connection Screening")
-    st.image(
-        GITHUB_BASE_URL + "11_renewable_connection_screening.png", 
-        caption="Coastal grid headroom map highlighting constrained vs available capacity", 
-        use_container_width=True
-    )
-    
-    st.subheader("12. Power Quality Assessment & Response")
-    st.image(
-        GITHUB_BASE_URL + "12_power_quality_assessment.png", 
-        caption="Feeder trace monitoring for voltage events, unbalance, and harmonics", 
-        use_container_width=True
-    )
-    
-    st.subheader("13. Battery Energy Storage System (BESS) Support")
-    st.image(
-        GITHUB_BASE_URL + "13_bess_grid_support.png", 
-        caption="Candidate battery storage siting along constrained distribution feeders", 
-        use_container_width=True
-    )
+BENEFITS = [
+    {"code": "B1", "title": "Deferred grid investment"},
+    {"code": "B2", "title": "Avoided grid investment"},
+    {"code": "B3", "title": "Reduced electricity losses"},
+    {"code": "B4", "title": "Reduced planned outages"},
+    {"code": "B5", "title": "Reduced unplanned outages"},
+    {"code": "B6", "title": "Improved customer satisfaction"},
+    {"code": "B7", "title": "Reduced CO₂ emissions"},
+    {"code": "B8", "title": "Improved organizational efficiency"},
+    {"code": "B9", "title": "EV integration benefits"}
+]
 
-# ==========================================
-# 3. LONG-TERM TAB
-# ==========================================
-with tab_long:
-    st.header("Long-Term: Coordinated Network Operations")
+# 4. State Management
+if 'selected_project' not in st.session_state:
+    st.session_state.selected_project = "Dashboard Home"
+
+if 'active_horizon' not in st.session_state:
+    st.session_state.active_horizon = "short"
+
+def select_project(code):
+    st.session_state.selected_project = code
+
+def set_horizon(horizon):
+    st.session_state.active_horizon = horizon
+
+# 5. Sidebar Navigation
+with st.sidebar:
+    st.title("⚡ EEHC GIS Control")
+    st.markdown("**Egyptian Electricity Holding Company**")
+    st.divider()
+
+    if st.button("🏠 Roadmap Dashboard", use_container_width=True, type="primary" if st.session_state.selected_project == "Dashboard Home" else "secondary"):
+        select_project("Dashboard Home")
+        st.rerun()
+
+    st.subheader("Quick Navigation")
+    for domain in DOMAINS:
+        with st.expander(domain["title"]):
+            for proj in domain["projects"]:
+                prefix = "🟢 " if proj.get("active") else ""
+                if st.button(f"{prefix}{proj['code']}: {proj['name'][:20]}...", key=f"sb_{proj['code']}", use_container_width=True):
+                    select_project(proj['code'])
+                    st.rerun()
+
+# 6. Main Roadmap Dashboard
+if st.session_state.selected_project == "Dashboard Home":
+
+    st.markdown("""
+        <div class="top-banner">
+            <h1>Smart Grid Roadmap</h1>
+            <p>5 domains • 26 projects • 9 potential benefits | EEHC and Egypt's nine DISCOs</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    cols = st.columns(5)
+    for idx, domain in enumerate(DOMAINS):
+        with cols[idx]:
+            # FIXED SYNTAX ERROR HERE
+            st.markdown(f'<div class="domain-header {domain["header_class"]}">{domain["title"]}</div>', unsafe_allow_html=True)
+            st.caption(f"📌 {domain['count']}")
+
+            for proj in domain["projects"]:
+                is_active = proj.get("active", False)
+                icon = "🔵" if proj["type"] == "direct" else "⭕"
+                
+                if is_active:
+                    st.markdown('<div class="gis-highlight">', unsafe_allow_html=True)
+                    st.markdown(f"<span style='color:#2563EB; font-size:0.7rem; font-weight:800; float:right;'>{proj['tag']}</span>", unsafe_allow_html=True)
+                    if st.button(f"{icon} **{proj['code']}** - {proj['name']}", key=f"rm_{proj['code']}", use_container_width=True, type="primary"):
+                        select_project(proj['code'])
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+                else:
+                    if st.button(f"{icon} **{proj['code']}** - {proj['name']}", key=f"rm_{proj['code']}", use_container_width=True):
+                        select_project(proj['code'])
+                        st.rerun()
+
+    st.markdown("---")
+    st.subheader("Potential Benefits of the Smart-Grid Portfolio")
     
-    st.subheader("14. ADMS & Restoration Automation")
-    st.image(
-        GITHUB_BASE_URL + "14_adms_restoration_automation.png", 
-        caption="Automated fault section isolation and switching restoration paths", 
-        use_container_width=True
-    )
+    b_cols = st.columns(9)
+    for i, benefit in enumerate(BENEFITS):
+        with b_cols[i]:
+            st.markdown(f"""
+                <div class="benefit-card">
+                    <div class="benefit-code">{benefit['code']}</div>
+                    <div class="benefit-title">{benefit['title']}</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+    st.caption("🔴 **⭕ 12 Support Projects** enable delivery | 🔵 **14 Direct Projects** deliver assessed benefits")
+
+# 7. Detailed View (IF2: GIS Rollout)
+elif st.session_state.selected_project == "IF2":
     
-    st.subheader("15. Voltage Optimization & Peak Management")
-    st.image(
-        GITHUB_BASE_URL + "15_voltage_optimization.png", 
-        caption="Grid control assets, real-time voltage profiles, and demand trace curves", 
-        use_container_width=True
-    )
+    st.button("← Back to Roadmap Dashboard", on_click=select_project, args=("Dashboard Home",))
     
-    st.subheader("16. Advanced Metering Infrastructure (AMI) Integration")
-    st.image(
-        GITHUB_BASE_URL + "16_ami_integration.png", 
-        caption="Smart meter link mapping, outage indications, and load profile analytics", 
-        use_container_width=True
-    )
+    st.markdown("""
+        <div style="background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%); padding: 24px; border-radius: 12px; color: white; margin-top: 10px;">
+            <span style="background: #DBEAFE; color: #1E40AF; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.8rem;">INFRASTRUCTURE DOMAIN (IF2)</span>
+            <h1 style="color: white !important; margin-top: 8px;">Asset Management Design & Implementation (GIS Rollout)</h1>
+            <p style="color: #BFDBFE; margin: 0;">EEHC and the Nine Distribution Companies (DISCOs)</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.write("")
+
+    # Primary Category Tabs
+    t1, t2, t3, t4 = st.tabs([
+        "📌 Executive Overview", 
+        "🗺️ Delivery Roadmap", 
+        "🏛️ DISCO Readiness Routes", 
+        "📊 Monitoring & Apps"
+    ])
+
+    # TAB 1: EXECUTIVE OVERVIEW
+    with t1:
+        st.subheader("Strategic Objectives")
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("""
+            * **Unified Network Record:** Nine DISCOs operating on one common standard model[cite: 1].
+            * **Trusted Network Data:** Verified geographic locations and stable asset identities[cite: 1].
+            """)
+        with c2:
+            st.markdown("""
+            * **Continuous Updates:** Workflow covering field capture ➔ verify ➔ approve ➔ publish[cite: 1].
+            * **Sector Applications:** Powering asset management, operations, OMS, and grid planning[cite: 1].
+            """)
+
+    # TAB 2: DELIVERY ROADMAP (WITH CLICKABLE HORIZONS)
+    with t2:
+        st.subheader("Delivery Roadmap Horizons")
+        st.write("Click a horizon button to view its milestones and visual artifacts:")
+
+        # 3 Interactive Horizon Buttons
+        h_col1, h_col2, h_col3 = st.columns(3)
+        with h_col1:
+            is_active = st.session_state.active_horizon == "short"
+            if st.button("🔴 **SHORT TERM**\n\nJan 2026 – Jun 2027", use_container_width=True, type="primary" if is_active else "secondary"):
+                set_horizon("short")
+                st.rerun()
+
+        with h_col2:
+            is_active = st.session_state.active_horizon == "medium"
+            if st.button("🟡 **MEDIUM TERM**\n\nJun 2027 – May 2030", use_container_width=True, type="primary" if is_active else "secondary"):
+                set_horizon("medium")
+                st.rerun()
+
+        with h_col3:
+            is_active = st.session_state.active_horizon == "long"
+            if st.button("🟢 **LONG TERM**\n\nMay 2030 Onward", use_container_width=True, type="primary" if is_active else "secondary"):
+                set_horizon("long")
+                st.rerun()
+
+        st.markdown("---")
+
+        # Dynamic Content per Horizon
+        if st.session_state.active_horizon == "short":
+            st.markdown("""
+                <div class="horizon-box">
+                    <h3 style="margin:0; color:#1E293B;">Short Term: Network Record & Continuous Updates</h3>
+                    <p style="margin:0; color:#64748B;">Jan 2026 – Jun 2027 | Priority: Central Foundation, 9 DISCO Pilots & Full Medium Voltage (MV) Coverage</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("##### 1. Established Central GIS Foundation")
+                st.markdown("""
+                * **Platform Upgrade:** Upgraded Enterprise & ArcGIS Pro installed at EEHC data center[cite: 1].
+                * **SQL Link:** Direct SQL–GIS connection with common asset IDs and symbology[cite: 1].
+                * **Proof of Connection:** Smouha pilot completed with 7-person trained R&D team[cite: 1].
+                """)
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/smouha_proof.jpg", caption="Smouha Proof of Connection Interface", use_container_width=True)
+
+            with col2:
+                st.markdown("##### 2. MV Network Drawing & Acceptance")
+                st.markdown("""
+                * **Delivery Method:** Smouha method ➔ 1 pilot per DISCO ➔ Full MV network[cite: 1].
+                * **Target Date:** June 2027[cite: 1].
+                * **Outcome:** Accepted MV components with verified coordinates & connectivity[cite: 1].
+                """)
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/mv_drawing.jpg", caption="MV Component Placement & Connectivity Drawing", use_container_width=True)
+
+            st.write("")
+            col3, col4 = st.columns(2)
+            with col3:
+                st.markdown("##### 3. Continuous Updates & Monitoring Dashboard")
+                st.markdown("""
+                * **Workflow:** Field Change ➔ Verify ➔ Approve ➔ Publish in SQL/GIS[cite: 1].
+                * **Monitoring:** Executive dashboards showing accepted coverage, exceptions, and backlog[cite: 1].
+                """)
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/gis_monitoring.jpg", caption="GIS Rollout Executive Dashboard", use_container_width=True)
+
+            with col4:
+                st.markdown("##### 4. Alexandria Region Integrated Output")
+                st.markdown("""
+                * **Integrated Grid Example:** Located components, connected MV feeders, and shared asset IDs across DISCOs[cite: 1].
+                """)
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/alexandria_grid.jpg", caption="Alexandria Network Record Overview", use_container_width=True)
+
+        elif st.session_state.active_horizon == "medium":
+            st.markdown("""
+                <div class="horizon-box" style="border-left-color: #D97706;">
+                    <h3 style="margin:0; color:#1E293B;">Medium Term: Coverage Extension & Operating Applications</h3>
+                    <p style="margin:0; color:#64748B;">Jun 2027 – May 2030 | Focus: LV Coverage, OMS, Asset Maintenance & RE/PQ Pilots</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+            m_col1, m_col2 = st.columns(2)
+            with m_col1:
+                st.markdown("##### 1. Low Voltage (LV) Network Mapping")
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/lv_expansion.jpg", caption="LV Pillar & Service Box Mapping", use_container_width=True)
+
+                st.markdown("##### 2. Asset Management & Condition Status")
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/asset_management.jpg", caption="Transformer Condition & Risk Inspection", use_container_width=True)
+
+                st.markdown("##### 3. Loss Analysis & Energy Cost Visibility")
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/loss_analysis.jpg", caption="Energy Imbalance & Loss Boundary Map", use_container_width=True)
+
+            with m_col2:
+                st.markdown("##### 4. Workforce & Fleet Dispatch")
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/fleet_management.jpg", caption="Workforce Routing & Incident Tasks", use_container_width=True)
+
+                st.markdown("##### 5. Outage Management System (OMS)")
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/oms_outage.jpg", caption="OMS Incident Isolation & Feeder Tracing", use_container_width=True)
+
+                st.markdown("##### 6. Renewable Energy (PV) & BESS Screening")
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/pv_bess.jpg", caption="Renewable Capacity Headroom & BESS Screening", use_container_width=True)
+
+        elif st.session_state.active_horizon == "long":
+            st.markdown("""
+                <div class="horizon-box" style="border-left-color: #16A34A;">
+                    <h3 style="margin:0; color:#1E293B;">Long Term: Coordinated & Automated Network Operations</h3>
+                    <p style="margin:0; color:#64748B;">May 2030 Onward | Focus: ADMS, Automated Restoration & Full AMI Integration</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+            l_col1, l_col2 = st.columns(2)
+            with l_col1:
+                st.markdown("##### 1. ADMS & Restoration Automation")
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/adms_restoration.jpg", caption="Automated Fault Isolation & Restoration Pathway", use_container_width=True)
+
+                st.markdown("##### 2. Voltage Optimization & Peak Demand")
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/voltage_control.jpg", caption="Voltage Profile & Reactive Power Monitoring", use_container_width=True)
+
+            with l_col2:
+                st.markdown("##### 3. Full AMI & Smart Meter Integration")
+                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/ami_integration.jpg", caption="Meter-to-Transformer Spatial Topology", use_container_width=True)
+
+    # TAB 3: DISCO READINESS ROUTES
+    with t3:
+        st.subheader("Three Integration Routes for DISCOs")
+        st.markdown("""
+        1. **Established GIS:** Map IDs and schema, retain local tools, synchronize approved updates to SQL[cite: 1].
+        2. **Partial / Fragmented GIS:** Consolidate existing work, fill survey gaps, supply equipment and training[cite: 1].
+        3. **No GIS:** Survey components from scratch, build local team capacity, utilize central platform[cite: 1].
+        """)
+
+    # TAB 4: MONITORING & APPS
+    with t4:
+        st.subheader("Continuous Update & Monitoring Workflow")
+        st.info("Field change ➔ DISCO Verification ➔ Joint Acceptance QA Checklist ➔ Publish in SQL/GIS[cite: 1]")
+
+# 8. Reserved Workspace
+else:
+    st.button("← Back to Roadmap Dashboard", on_click=select_project, args=("Dashboard Home",))
+    code = st.session_state.selected_project
+    proj_name = "Selected Project"
+    for domain in DOMAINS:
+        for p in domain["projects"]:
+            if p["code"] == code:
+                proj_name = p["name"]
+
+    st.title(f"📌 {code}: {proj_name}")
+    st.info(f"Workspace reserved for project `{code}`.")
