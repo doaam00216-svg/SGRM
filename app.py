@@ -81,15 +81,6 @@ st.markdown("""
         box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         margin-bottom: 20px;
     }
-    .image-caption-card {
-        background: #F1F5F9;
-        border-radius: 8px;
-        padding: 10px 14px;
-        margin-top: 8px;
-        font-size: 0.85rem;
-        color: #475569;
-        border-left: 3px solid #0EA5E9;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -220,7 +211,6 @@ if st.session_state.selected_project == "Dashboard Home":
     cols = st.columns(5)
     for idx, domain in enumerate(DOMAINS):
         with cols[idx]:
-            # FIXED SYNTAX ERROR HERE
             st.markdown(f'<div class="domain-header {domain["header_class"]}">{domain["title"]}</div>', unsafe_allow_html=True)
             st.caption(f"📌 {domain['count']}")
 
@@ -270,7 +260,6 @@ elif st.session_state.selected_project == "IF2":
 
     st.write("")
 
-    # Primary Category Tabs
     t1, t2, t3, t4 = st.tabs([
         "📌 Executive Overview", 
         "🗺️ Delivery Roadmap", 
@@ -278,7 +267,6 @@ elif st.session_state.selected_project == "IF2":
         "📊 Monitoring & Apps"
     ])
 
-    # TAB 1: EXECUTIVE OVERVIEW
     with t1:
         st.subheader("Strategic Objectives")
         c1, c2 = st.columns(2)
@@ -293,12 +281,10 @@ elif st.session_state.selected_project == "IF2":
             * **Sector Applications:** Powering asset management, operations, OMS, and grid planning[cite: 1].
             """)
 
-    # TAB 2: DELIVERY ROADMAP (WITH CLICKABLE HORIZONS)
     with t2:
         st.subheader("Delivery Roadmap Horizons")
         st.write("Click a horizon button to view its milestones and visual artifacts:")
 
-        # 3 Interactive Horizon Buttons
         h_col1, h_col2, h_col3 = st.columns(3)
         with h_col1:
             is_active = st.session_state.active_horizon == "short"
@@ -320,7 +306,7 @@ elif st.session_state.selected_project == "IF2":
 
         st.markdown("---")
 
-        # Dynamic Content per Horizon
+        # Working Public Working Images
         if st.session_state.active_horizon == "short":
             st.markdown("""
                 <div class="horizon-box">
@@ -337,7 +323,7 @@ elif st.session_state.selected_project == "IF2":
                 * **SQL Link:** Direct SQL–GIS connection with common asset IDs and symbology[cite: 1].
                 * **Proof of Connection:** Smouha pilot completed with 7-person trained R&D team[cite: 1].
                 """)
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/smouha_proof.jpg", caption="Smouha Proof of Connection Interface", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800", caption="Central GIS Infrastructure & Server Connection", use_container_width=True)
 
             with col2:
                 st.markdown("##### 2. MV Network Drawing & Acceptance")
@@ -346,7 +332,7 @@ elif st.session_state.selected_project == "IF2":
                 * **Target Date:** June 2027[cite: 1].
                 * **Outcome:** Accepted MV components with verified coordinates & connectivity[cite: 1].
                 """)
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/mv_drawing.jpg", caption="MV Component Placement & Connectivity Drawing", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800", caption="Medium Voltage Grid Mapping", use_container_width=True)
 
             st.write("")
             col3, col4 = st.columns(2)
@@ -356,14 +342,14 @@ elif st.session_state.selected_project == "IF2":
                 * **Workflow:** Field Change ➔ Verify ➔ Approve ➔ Publish in SQL/GIS[cite: 1].
                 * **Monitoring:** Executive dashboards showing accepted coverage, exceptions, and backlog[cite: 1].
                 """)
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/gis_monitoring.jpg", caption="GIS Rollout Executive Dashboard", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800", caption="GIS Rollout Monitoring Dashboard", use_container_width=True)
 
             with col4:
                 st.markdown("##### 4. Alexandria Region Integrated Output")
                 st.markdown("""
                 * **Integrated Grid Example:** Located components, connected MV feeders, and shared asset IDs across DISCOs[cite: 1].
                 """)
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/alexandria_grid.jpg", caption="Alexandria Network Record Overview", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800", caption="Alexandria Geographic Grid Overlay", use_container_width=True)
 
         elif st.session_state.active_horizon == "medium":
             st.markdown("""
@@ -376,23 +362,23 @@ elif st.session_state.selected_project == "IF2":
             m_col1, m_col2 = st.columns(2)
             with m_col1:
                 st.markdown("##### 1. Low Voltage (LV) Network Mapping")
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/lv_expansion.jpg", caption="LV Pillar & Service Box Mapping", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?w=800", caption="LV Infrastructure Mapping", use_container_width=True)
 
                 st.markdown("##### 2. Asset Management & Condition Status")
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/asset_management.jpg", caption="Transformer Condition & Risk Inspection", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=800", caption="Transformer Maintenance Monitoring", use_container_width=True)
 
                 st.markdown("##### 3. Loss Analysis & Energy Cost Visibility")
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/loss_analysis.jpg", caption="Energy Imbalance & Loss Boundary Map", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800", caption="Energy Loss Boundary Analytics", use_container_width=True)
 
             with m_col2:
                 st.markdown("##### 4. Workforce & Fleet Dispatch")
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/fleet_management.jpg", caption="Workforce Routing & Incident Tasks", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800", caption="Field Workforce Dispatching", use_container_width=True)
 
                 st.markdown("##### 5. Outage Management System (OMS)")
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/oms_outage.jpg", caption="OMS Incident Isolation & Feeder Tracing", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800", caption="OMS Operations Dashboard", use_container_width=True)
 
                 st.markdown("##### 6. Renewable Energy (PV) & BESS Screening")
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/pv_bess.jpg", caption="Renewable Capacity Headroom & BESS Screening", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1509391365360-2e959784a276?w=800", caption="Solar & Energy Storage Integration", use_container_width=True)
 
         elif st.session_state.active_horizon == "long":
             st.markdown("""
@@ -405,16 +391,15 @@ elif st.session_state.selected_project == "IF2":
             l_col1, l_col2 = st.columns(2)
             with l_col1:
                 st.markdown("##### 1. ADMS & Restoration Automation")
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/adms_restoration.jpg", caption="Automated Fault Isolation & Restoration Pathway", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1518770660439-4636190af475?w=800", caption="Automated Grid Control", use_container_width=True)
 
                 st.markdown("##### 2. Voltage Optimization & Peak Demand")
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/voltage_control.jpg", caption="Voltage Profile & Reactive Power Monitoring", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800", caption="Voltage Analytics", use_container_width=True)
 
             with l_col2:
                 st.markdown("##### 3. Full AMI & Smart Meter Integration")
-                st.image("https://raw.githubusercontent.com/GIS-Assets/GIS-Media/main/ami_integration.jpg", caption="Meter-to-Transformer Spatial Topology", use_container_width=True)
+                st.image("https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=800", caption="Smart Meter Topology", use_container_width=True)
 
-    # TAB 3: DISCO READINESS ROUTES
     with t3:
         st.subheader("Three Integration Routes for DISCOs")
         st.markdown("""
@@ -423,12 +408,10 @@ elif st.session_state.selected_project == "IF2":
         3. **No GIS:** Survey components from scratch, build local team capacity, utilize central platform[cite: 1].
         """)
 
-    # TAB 4: MONITORING & APPS
     with t4:
         st.subheader("Continuous Update & Monitoring Workflow")
         st.info("Field change ➔ DISCO Verification ➔ Joint Acceptance QA Checklist ➔ Publish in SQL/GIS[cite: 1]")
 
-# 8. Reserved Workspace
 else:
     st.button("← Back to Roadmap Dashboard", on_click=select_project, args=("Dashboard Home",))
     code = st.session_state.selected_project
