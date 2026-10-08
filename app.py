@@ -75,13 +75,13 @@ st.markdown(
         position: fixed;
         bottom: 20px;
         right: 20px;
-        width: 180px;
-        height: 90px;
+        width: 280px;
+        height: 190px;
         background-image: url('data:image/png;base64,{giz_b64}');
         background-repeat: no-repeat;
         background-position: bottom right;
         background-size: contain;
-        opacity: 0.25;
+        opacity: 0.40;
         pointer-events: none;
         z-index: 0;
     }}
