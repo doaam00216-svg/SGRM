@@ -104,13 +104,13 @@ st.markdown(
         font-weight: 800;
         margin: 0;
     }}
-    .roadmap-banner p {
-        color: #475569 !important; /* Change to your preferred gray hex code */
+    .roadmap-banner p {{
+        color: #1E293B !important; /* Change to your preferred gray hex code */
         font-size: 1.05rem;
         font-weight: 700;
         margin-top: 6px;
         margin-bottom: 0;
-    }
+    }}
     /* Project Header Banner (Switches to City Skyline Header) */
     .project-banner {{
         background: linear-gradient(135deg, rgba(15,23,42,0.40) 0%, rgba(30,41,59,0.40) 100%), 
