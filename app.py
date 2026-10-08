@@ -1,11 +1,39 @@
 import streamlit as st
 
-# 1. Page Configuration
-st.set_page_config(
-    page_title="EEHC Smart Grid Roadmap Dashboard",
-    page_icon="⚡",
-    layout="wide",
-    initial_sidebar_state="expanded"
+st.set_page_config(page_title="EEHC GIS Strategic Roadmap", layout="wide")
+
+# Inject Custom EEHC Theme CSS
+st.markdown(
+    """
+    <style>
+    /* Main Background Styling */
+    .stApp {
+        background-color: #0b132b; /* Dark EEHC Navy Blue background */
+        color: #ffffff;            /* White body text */
+    }
+
+    /* Header & Subheader Colors */
+    h1, h2, h3, h4, h5, h6 {
+        color: #00d4ff !important; /* EEHC Electric Cyan Accent */
+    }
+
+    /* Container & Card Styling for GIS Sections */
+    div[data-testid="stVerticalBlock"] > div {
+        background-color: #1c2541; /* Darker navy card container */
+        border-radius: 10px;
+        padding: 10px;
+        border: 1px solid #3a506b;
+    }
+
+    /* Custom Styling for Image Captions */
+    .stImage caption {
+        color: #8d99ae !important;
+        font-size: 14px;
+        font-style: italic;
+    }
+    </style>
+""",
+    unsafe_allow_html=True,
 )
 
 # 2. Custom CSS Styles
