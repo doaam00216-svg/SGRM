@@ -1,3 +1,69 @@
+import base64
+import streamlit as st
+
+# =========================================================
+# 1. PAGE CONFIGURATION
+# =========================================================
+st.set_page_config(page_title="EEHC GIS Strategic Roadmap", layout="wide")
+
+# =========================================================
+# 2. WHITE THEME & SKYLINE BACKGROUND CSS
+# =========================================================
+st.markdown(
+    """
+    <style>
+    /* Clean White Background */
+    .stApp {
+        background-color: #ffffff !important;
+        color: #1a1a1a !important;
+    }
+
+    /* Footer Skyline Watermark at the bottom */
+    .stApp::after {
+        content: "";
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background-image: url('https://raw.githubusercontent.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPO_NAME>/main/images/skyline_footer.png');
+        background-repeat: repeat-x;
+        background-position: bottom center;
+        background-size: contain;
+        opacity: 0.3;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Headings styling */
+    h1, h2, h3, h4 {
+        color: #0d3b66 !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    </style>
+""",
+    unsafe_allow_html=True,
+)
+
+# =========================================================
+# 3. TOP BRANDING BANNER (LOGOS & GRAPHICS)
+# =========================================================
+header_col1, header_col2 = st.columns([1, 4])
+
+with header_col1:
+    # GIZ Logo & Skyline image
+    st.image("images/giz_logo.png", use_container_width=True)
+
+with header_col2:
+    # EEHC Egypt Grid Header Banner image
+    st.image("images/eehc_header_banner.png", use_container_width=True)
+
+st.markdown("---")
+
+# =========================================================
+# 4. YOUR EXISTING ROADMAP CODE STARTS HERE
+# =========================================================
+# Paste all your original roadmap code, tabs, and st.image() calls below this line!
 import streamlit as st
 
 st.set_page_config(page_title="EEHC GIS Strategic Roadmap", layout="wide")
