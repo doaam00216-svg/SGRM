@@ -19,13 +19,24 @@ def get_base64_image(image_path):
     return ""
 
 
-# Helper function to safely render local images with width option
+# Helper function to safely render local images with custom width option
 def display_safe_image(file_path, caption="", width=None):
-    if os.path.exists(file_path):
+    # Check both .png and .jpg variants if exact path fails
+    target_path = file_path
+    if not os.path.exists(target_path):
+        alt_path = (
+            file_path.replace(".jpg", ".png")
+            if ".jpg" in file_path
+            else file_path.replace(".png", ".jpg")
+        )
+        if os.path.exists(alt_path):
+            target_path = alt_path
+
+    if os.path.exists(target_path):
         if width:
-            st.image(file_path, caption=caption, width=width)
+            st.image(target_path, caption=caption, width=width)
         else:
-            st.image(file_path, caption=caption, use_container_width=True)
+            st.image(target_path, caption=caption, use_container_width=True)
     else:
         st.warning(f"⚠️ Image file missing: `{file_path}`")
 
@@ -61,7 +72,7 @@ st.markdown(
         z-index: 0;
     }}
     .top-banner {{
-        background: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.88)), 
+        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%), 
                     url('data:image/png;base64,{eehc_b64}');
         background-repeat: no-repeat;
         background-position: center right;
@@ -140,6 +151,7 @@ st.markdown(
         border-left: 3px solid #0EA5E9;
     }}
     .project-workspace-container {{
+        background-color: #FFFFFF;
         background-image: linear-gradient(rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.94)), 
                     url('data:image/png;base64,{asset_rec_b64}');
         background-repeat: no-repeat;
@@ -473,10 +485,15 @@ elif st.session_state.selected_project == "IF2":
             * **Sector Applications:** Powering asset management, operations, OMS, and grid planning[cite: 1].
             """)
 
-        display_safe_image(
-            "images/01_Strategic_objectives_Asset_record.png",
-            caption="Strategic Objectives Schema & Asset Record Workflow",
-        )
+        st.write("")
+        # Center and shrink the Strategic Objectives image
+        col_space_l, col_img_center, col_space_r = st.columns([1, 2, 1])
+        with col_img_center:
+            display_safe_image(
+                "images/01_Strategic_objectives_Asset_record.png",
+                caption="Strategic Objectives Schema & Asset Record Workflow",
+                width=550,
+            )
 
     # TAB 2: DELIVERY ROADMAP
     with t2:
@@ -538,7 +555,7 @@ elif st.session_state.selected_project == "IF2":
                 * **Proof of Connection:** Smouha pilot completed with 7-person trained R&D team[cite: 1].
                 """)
                 display_safe_image(
-                    "images/02_Established_central_GIS_foundation.jpg",
+                    "images/02_Established_central_GIS_foundation.png",
                     caption="Smouha Proof of Connection Interface",
                 )
                 st.markdown(
@@ -554,7 +571,7 @@ elif st.session_state.selected_project == "IF2":
                 * **Outcome:** Accepted MV components with verified coordinates & connectivity[cite: 1].
                 """)
                 display_safe_image(
-                    "images/03_MV_network_drawing_and_acceptance.jpg",
+                    "images/03_MV_network_drawing_and_acceptance.png",
                     caption="MV Component Placement & Connectivity Drawing",
                 )
                 st.markdown(
@@ -613,7 +630,7 @@ elif st.session_state.selected_project == "IF2":
                     "Extend accepted MV records down to all LV components and customer service links[cite: 1]."
                 )
                 display_safe_image(
-                    "images/06_LV_network_expansion.jpg",
+                    "images/06_LV_network_expansion.png",
                     caption="LV Pillar & Service Box Mapping",
                 )
 
@@ -622,7 +639,7 @@ elif st.session_state.selected_project == "IF2":
                     "Link mapped components to condition status, inspection logs, and SQL work orders[cite: 1]."
                 )
                 display_safe_image(
-                    "images/07_Asset_Management_and_Maintenance.jpg",
+                    "images/07_Asset_Management_and_Maintenance.png",
                     caption="Transformer Condition & Risk Inspection",
                 )
 
@@ -643,7 +660,7 @@ elif st.session_state.selected_project == "IF2":
                     "Route maintenance crews dynamically against network outage points[cite: 1]."
                 )
                 display_safe_image(
-                    "images/08_Fleet_and_Field_Workforce_Management.jpg",
+                    "images/08_Fleet_and_Field_Workforce_Management.png",
                     caption="Workforce Routing & Incident Tasks",
                 )
 
