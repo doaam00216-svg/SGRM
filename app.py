@@ -1,5 +1,4 @@
 import base64
-import glob
 import os
 import streamlit as st
 
@@ -12,53 +11,41 @@ st.set_page_config(
 )
 
 
-# Helper function to find existing file regardless of single/double extensions (.jpg.png, .png.png, etc.)
-def find_existing_image(base_path):
-    if os.path.exists(base_path):
-        return base_path
-
-    # Extract base name without extension
-    folder, filename = os.path.split(base_path)
-    clean_name = filename.split(".")[0]
-
-    # Look for matching pattern in images directory
-    search_pattern = os.path.join(folder, f"{clean_name}*")
-    matches = glob.glob(search_pattern)
-
-    if matches:
-        return matches[0]
-
-    return None
-
-
 # Helper function to safely encode local images to Base64
 def get_base64_image(image_path):
-    real_path = find_existing_image(image_path)
-    if real_path and os.path.exists(real_path):
-        with open(real_path, "rb") as img_file:
+    if os.path.exists(image_path):
+        with open(image_path, "rb") as img_file:
             return base64.b64encode(img_file.read()).decode("utf-8")
     return ""
 
 
 # Helper function to safely render local images with custom width option
 def display_safe_image(file_path, caption="", width=None):
-    real_path = find_existing_image(file_path)
+    # Check both .png and .jpg variants if exact path fails
+    target_path = file_path
+    if not os.path.exists(target_path):
+        alt_path = (
+            file_path.replace(".jpg", ".png")
+            if ".jpg" in file_path
+            else file_path.replace(".png", ".jpg")
+        )
+        if os.path.exists(alt_path):
+            target_path = alt_path
 
-    if real_path and os.path.exists(real_path):
+    if os.path.exists(target_path):
         if width:
-            st.image(real_path, caption=caption, width=width)
+            st.image(target_path, caption=caption, width=width)
         else:
-            st.image(real_path, caption=caption, use_container_width=True)
+            st.image(target_path, caption=caption, use_container_width=True)
     else:
         st.warning(f"⚠️ Image file missing: `{file_path}`")
 
 
 # Base64 background assets
-giz_b64 = get_base64_image("images/giz_logo")
-eehc_b64 = get_base64_image("images/bg_eehc_banner")
-skyline_b64 = get_base64_image("images/bg_city_skyline")
+skyline_b64 = get_base64_image("images/bg_city_skyline.png")
+eehc_b64 = get_base64_image("images/bg_eehc_banner.png")
 asset_rec_b64 = get_base64_image(
-    "images/01_Strategic_objectives_Asset_record"
+    "images/01_Strategic_objectives_Asset_record.png"
 )
 
 # 2. Custom CSS Styles
@@ -69,65 +56,44 @@ st.markdown(
         background-color: #F8FAFC !important;
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }}
-    /* Fixed GIZ image in bottom-right corner */
     .stApp::after {{
         content: "";
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 280px;
-        height: 190px;
-        background-image: url('data:image/png;base64,{giz_b64}');
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 120px;
+        background-image: url('data:image/png;base64,{skyline_b64}');
         background-repeat: no-repeat;
         background-position: bottom right;
         background-size: contain;
-        opacity: 0.35;
+        opacity: 0.18;
         pointer-events: none;
         z-index: 0;
     }}
-    /* Main Roadmap Top Banner (EEHC Banner Header) */
-    .roadmap-banner {{
-        background: linear-gradient(135deg, rgba(15,23,42,o.85) 0%, rgba(30,41,59,0.85) 100%), 
+    .top-banner {{
+        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%), 
                     url('data:image/png;base64,{eehc_b64}');
         background-repeat: no-repeat;
         background-position: center right;
         background-size: cover;
         border-radius: 16px;
-        padding: 28px 32px;
+        padding: 24px 32px;
         color: white;
         margin-bottom: 24px;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
     }}
-    .roadmap-banner h1 {{
+    .top-banner h1 {{
         color: #FFFFFF !important;
         font-size: 2.2rem;
         font-weight: 800;
         margin: 0;
     }}
-    .roadmap-banner p {{
+    .top-banner p {{
         color: #94A3B8;
         font-size: 1.05rem;
         margin-top: 6px;
         margin-bottom: 0;
-    }}
-    /* Project Header Banner (Switches to City Skyline Header) */
-    .project-banner {{
-        background: linear-gradient(135deg, rgba(37,99,235,0.9) 0%, rgba(29,78,216,0.9) 100%), 
-                    url('data:image/png;base64,{skyline_b64}');
-        background-repeat: no-repeat;
-        background-position: center right;
-        background-size: cover;
-        border-radius: 12px;
-        padding: 24px 32px;
-        color: white;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.25);
-    }}
-    .project-banner h1 {{
-        color: #FFFFFF !important;
-        margin-top: 8px;
-        margin-bottom: 4px;
     }}
     .domain-header {{
         border-radius: 12px 12px 0 0;
@@ -372,9 +338,9 @@ def set_horizon(horizon):
     st.session_state.active_horizon = horizon
 
 
-# 5. Sidebar Navigation
+# 5. Sidebar
 with st.sidebar:
-    display_safe_image("images/giz_logo")
+    display_safe_image("images/giz_logo.png")
     st.title("⚡ EEHC GIS Control")
     st.markdown("**Egyptian Electricity Holding Company**")
     st.divider()
@@ -407,10 +373,9 @@ with st.sidebar:
 # 6. Main Routing Logic
 if st.session_state.selected_project == "Dashboard Home":
 
-    # Header using bg_eehc_banner
     st.markdown(
         """
-        <div class="roadmap-banner">
+        <div class="top-banner">
             <h1>Smart Grid Roadmap</h1>
             <p>5 domains • 26 projects • 9 potential benefits | EEHC and Egypt's nine DISCOs</p>
         </div>
@@ -485,17 +450,18 @@ elif st.session_state.selected_project == "IF2":
         args=("Dashboard Home",),
     )
 
-    # Header switches to bg_city_skyline for Project View
     st.markdown(
         """
-        <div class="project-banner">
+        <div style="background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%); padding: 24px; border-radius: 12px; color: white; margin-top: 10px;">
             <span style="background: #DBEAFE; color: #1E40AF; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.8rem;">INFRASTRUCTURE DOMAIN (IF2)</span>
-            <h1>Asset Management Design & Implementation (GIS Rollout)</h1>
-            <p style="color: #E2E8F0; margin: 0;">EEHC and the Nine Distribution Companies (DISCOs)</p>
+            <h1 style="color: white !important; margin-top: 8px;">Asset Management Design & Implementation (GIS Rollout)</h1>
+            <p style="color: #BFDBFE; margin: 0;">EEHC and the Nine Distribution Companies (DISCOs)</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
+
+    st.write("")
 
     t1, t2, t3, t4 = st.tabs([
         "📌 Executive Overview",
@@ -510,20 +476,21 @@ elif st.session_state.selected_project == "IF2":
         c1, c2 = st.columns(2)
         with c1:
             st.markdown("""
-            * **Unified Network Record:** Nine DISCOs operating on one common standard model.
-            * **Trusted Network Data:** Verified geographic locations and stable asset identities.
+            * **Unified Network Record:** Nine DISCOs operating on one common standard model[cite: 1].
+            * **Trusted Network Data:** Verified geographic locations and stable asset identities[cite: 1].
             """)
         with c2:
             st.markdown("""
-            * **Continuous Updates:** Workflow covering field capture ➔ verify ➔ approve ➔ publish.
-            * **Sector Applications:** Powering asset management, operations, OMS, and grid planning.
+            * **Continuous Updates:** Workflow covering field capture ➔ verify ➔ approve ➔ publish[cite: 1].
+            * **Sector Applications:** Powering asset management, operations, OMS, and grid planning[cite: 1].
             """)
 
         st.write("")
+        # Center and shrink the Strategic Objectives image
         col_space_l, col_img_center, col_space_r = st.columns([1, 2, 1])
         with col_img_center:
             display_safe_image(
-                "images/01_Strategic_objectives_Asset_record",
+                "images/01_Strategic_objectives_Asset_record.png",
                 caption="Strategic Objectives Schema & Asset Record Workflow",
                 width=550,
             )
@@ -583,32 +550,32 @@ elif st.session_state.selected_project == "IF2":
             with col1:
                 st.markdown("##### 1. Established Central GIS Foundation")
                 st.markdown("""
-                * **Platform Upgrade:** Upgraded Enterprise & ArcGIS Pro installed at EEHC data center.
-                * **SQL Link:** Direct SQL–GIS connection with common asset IDs and symbology.
-                * **Proof of Connection:** Smouha pilot completed with 7-person trained R&D team.
+                * **Platform Upgrade:** Upgraded Enterprise & ArcGIS Pro installed at EEHC data center[cite: 1].
+                * **SQL Link:** Direct SQL–GIS connection with common asset IDs and symbology[cite: 1].
+                * **Proof of Connection:** Smouha pilot completed with 7-person trained R&D team[cite: 1].
                 """)
                 display_safe_image(
-                    "images/02_Established_central_GIS_foundation",
+                    "images/02_Established_central_GIS_foundation.png",
                     caption="Smouha Proof of Connection Interface",
                 )
                 st.markdown(
-                    '<div class="image-caption-card">Verified location & kiosk attributes (ALX-MAC-10-K0475) in Smouha.</div>',
+                    '<div class="image-caption-card">Verified location & kiosk attributes (ALX-MAC-10-K0475) in Smouha[cite: 1].</div>',
                     unsafe_allow_html=True,
                 )
 
             with col2:
                 st.markdown("##### 2. MV Network Drawing & Acceptance")
                 st.markdown("""
-                * **Delivery Method:** Smouha method ➔ 1 pilot per DISCO ➔ Full MV network.
-                * **Target Date:** June 2027.
-                * **Outcome:** Accepted MV components with verified coordinates & connectivity.
+                * **Delivery Method:** Smouha method ➔ 1 pilot per DISCO ➔ Full MV network[cite: 1].
+                * **Target Date:** June 2027[cite: 1].
+                * **Outcome:** Accepted MV components with verified coordinates & connectivity[cite: 1].
                 """)
                 display_safe_image(
-                    "images/03_MV_network_drawing_and_acceptance",
+                    "images/03_MV_network_drawing_and_acceptance.png",
                     caption="MV Component Placement & Connectivity Drawing",
                 )
                 st.markdown(
-                    '<div class="image-caption-card">Medium Voltage network tracing and component verification map.</div>',
+                    '<div class="image-caption-card">Medium Voltage network tracing and component verification map[cite: 1].</div>',
                     unsafe_allow_html=True,
                 )
 
@@ -619,29 +586,29 @@ elif st.session_state.selected_project == "IF2":
                     "##### 3. Continuous Updates & Monitoring Dashboard"
                 )
                 st.markdown("""
-                * **Workflow:** Field Change ➔ Verify ➔ Approve ➔ Publish in SQL/GIS.
-                * **Monitoring:** Executive dashboards showing accepted coverage, exceptions, and backlog.
+                * **Workflow:** Field Change ➔ Verify ➔ Approve ➔ Publish in SQL/GIS[cite: 1].
+                * **Monitoring:** Executive dashboards showing accepted coverage, exceptions, and backlog[cite: 1].
                 """)
                 display_safe_image(
-                    "images/04_Continuous_updates_and_rollout_monitoring",
+                    "images/04_Continuous_updates_and_rollout_monitoring.png",
                     caption="GIS Rollout Executive Dashboard",
                 )
                 st.markdown(
-                    '<div class="image-caption-card">Tracking MV Coverage, Data Quality, Update Backlog, and Synchronization.</div>',
+                    '<div class="image-caption-card">Tracking MV Coverage, Data Quality, Update Backlog, and Synchronization[cite: 1].</div>',
                     unsafe_allow_html=True,
                 )
 
             with col4:
                 st.markdown("##### 4. Alexandria Region Integrated Output")
                 st.markdown("""
-                * **Integrated Grid Example:** Located components, connected MV feeders, and shared asset IDs across DISCOs.
+                * **Integrated Grid Example:** Located components, connected MV feeders, and shared asset IDs across DISCOs[cite: 1].
                 """)
                 display_safe_image(
-                    "images/05_Expected_short_term_network_record",
+                    "images/05_Expected_short_term_network_record.png",
                     caption="Alexandria Network Record Overview",
                 )
                 st.markdown(
-                    '<div class="image-caption-card">Integrated MV network record output for Alexandria Distribution Region.</div>',
+                    '<div class="image-caption-card">Integrated MV network record output for Alexandria Distribution Region[cite: 1].</div>',
                     unsafe_allow_html=True,
                 )
 
@@ -660,19 +627,19 @@ elif st.session_state.selected_project == "IF2":
             with m_col1:
                 st.markdown("##### 1. Low Voltage (LV) Network Mapping")
                 st.markdown(
-                    "Extend accepted MV records down to all LV components and customer service links."
+                    "Extend accepted MV records down to all LV components and customer service links[cite: 1]."
                 )
                 display_safe_image(
-                    "images/06_LV_network_expansion",
+                    "images/06_LV_network_expansion.png",
                     caption="LV Pillar & Service Box Mapping",
                 )
 
                 st.markdown("##### 2. Asset Management & Condition Status")
                 st.markdown(
-                    "Link mapped components to condition status, inspection logs, and SQL work orders."
+                    "Link mapped components to condition status, inspection logs, and SQL work orders[cite: 1]."
                 )
                 display_safe_image(
-                    "images/07_Asset_Management_and_Maintenance",
+                    "images/07_Asset_Management_and_Maintenance.png",
                     caption="Transformer Condition & Risk Inspection",
                 )
 
@@ -680,29 +647,29 @@ elif st.session_state.selected_project == "IF2":
                     "##### 3. Loss Analysis & Energy Cost Visibility"
                 )
                 st.markdown(
-                    "Compare energy across feeder, transformer, and customer boundaries to locate losses."
+                    "Compare energy across feeder, transformer, and customer boundaries to locate losses[cite: 1]."
                 )
                 display_safe_image(
-                    "images/10_Loss_Analysis_and_Energy_Cost_Visibility",
+                    "images/10_Loss_Analysis_and_Energy_Cost_Visibility.png",
                     caption="Energy Imbalance & Loss Boundary Map",
                 )
 
             with m_col2:
                 st.markdown("##### 4. Workforce & Fleet Dispatch")
                 st.markdown(
-                    "Route maintenance crews dynamically against network outage points."
+                    "Route maintenance crews dynamically against network outage points[cite: 1]."
                 )
                 display_safe_image(
-                    "images/08_Fleet_and_Field_Workforce_Management",
+                    "images/08_Fleet_and_Field_Workforce_Management.png",
                     caption="Workforce Routing & Incident Tasks",
                 )
 
                 st.markdown("##### 5. Outage Management System (OMS)")
                 st.markdown(
-                    "Link customer incidents to affected grid feeder areas for faster restoration."
+                    "Link customer incidents to affected grid feeder areas for faster restoration[cite: 1]."
                 )
                 display_safe_image(
-                    "images/09_Outage_Management_System",
+                    "images/09_Outage_Management_System.png",
                     caption="OMS Incident Isolation & Feeder Tracing",
                 )
 
@@ -710,14 +677,14 @@ elif st.session_state.selected_project == "IF2":
                     "##### 6. Renewable Energy (PV) & BESS Screening"
                 )
                 st.markdown(
-                    "Screen PV/EV connection headroom and evaluate Battery Storage (BESS) locations."
+                    "Screen PV/EV connection headroom and evaluate Battery Storage (BESS) locations[cite: 1]."
                 )
                 display_safe_image(
-                    "images/11_Renewable_Energy_and_EV_Connection_Planning",
+                    "images/11_Renewable_Energy_and_EV_Connection_Planning.png",
                     caption="Renewable Capacity Headroom",
                 )
                 display_safe_image(
-                    "images/13_Battery_Energy_Storage_for_Grid_Support",
+                    "images/13_Battery_Energy_Storage_for_Grid_Support.png",
                     caption="BESS Location Screening",
                 )
 
@@ -736,19 +703,19 @@ elif st.session_state.selected_project == "IF2":
             with l_col1:
                 st.markdown("##### 1. ADMS & Restoration Automation")
                 st.markdown(
-                    "Use maintained GIS topology inside Advanced Distribution Management Systems for automated switching."
+                    "Use maintained GIS topology inside Advanced Distribution Management Systems for automated switching[cite: 1]."
                 )
                 display_safe_image(
-                    "images/14_ADMS_and_Restoration_Automation",
+                    "images/14_ADMS_and_Restoration_Automation.png",
                     caption="Automated Fault Isolation & Restoration Pathway",
                 )
 
                 st.markdown("##### 2. Voltage Optimization & Peak Demand")
                 st.markdown(
-                    "Study volt/VAR control options across distribution feeders."
+                    "Study volt/VAR control options across distribution feeders[cite: 1]."
                 )
                 display_safe_image(
-                    "images/15_Voltage_Optimization_and_Peak_Management",
+                    "images/15_Voltage_Optimization_and_Peak_Management.png",
                     caption="Voltage Profile & Reactive Power Monitoring",
                 )
 
@@ -757,10 +724,10 @@ elif st.session_state.selected_project == "IF2":
                     "##### 3. Full AMI & Smart Meter Integration"
                 )
                 st.markdown(
-                    "Link all smart meters precisely to their supply transformer and feeder."
+                    "Link all smart meters precisely to their supply transformer and feeder[cite: 1]."
                 )
                 display_safe_image(
-                    "images/16_Advanced_Metering_Infrastructure_Integration",
+                    "images/16_Advanced_Metering_Infrastructure_Integration.png",
                     caption="Meter-to-Transformer Spatial Topology",
                 )
 
@@ -768,16 +735,16 @@ elif st.session_state.selected_project == "IF2":
     with t3:
         st.subheader("Three Integration Routes for DISCOs")
         st.markdown("""
-        1. **Established GIS:** Map IDs and schema, retain local tools, synchronize approved updates to SQL.
-        2. **Partial / Fragmented GIS:** Consolidate existing work, fill survey gaps, supply equipment and training.
-        3. **No GIS:** Survey components from scratch, build local team capacity, utilize central platform.
+        1. **Established GIS:** Map IDs and schema, retain local tools, synchronize approved updates to SQL[cite: 1].
+        2. **Partial / Fragmented GIS:** Consolidate existing work, fill survey gaps, supply equipment and training[cite: 1].
+        3. **No GIS:** Survey components from scratch, build local team capacity, utilize central platform[cite: 1].
         """)
 
     # TAB 4: MONITORING & APPS
     with t4:
         st.subheader("Continuous Update & Monitoring Workflow")
         st.info(
-            "Field change ➔ DISCO Verification ➔ Joint Acceptance QA Checklist ➔ Publish in SQL/GIS"
+            "Field change ➔ DISCO Verification ➔ Joint Acceptance QA Checklist ➔ Publish in SQL/GIS[cite: 1]"
         )
 
 else:
@@ -793,20 +760,9 @@ else:
             if p["code"] == code:
                 proj_name = p["name"]
 
-    # Generic Project Banner using bg_city_skyline
-    st.markdown(
-        f"""
-        <div class="project-banner">
-            <span style="background: #DBEAFE; color: #1E40AF; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.8rem;">PROJECT WORKSPACE ({code})</span>
-            <h1>{proj_name}</h1>
-            <p style="color: #E2E8F0; margin: 0;">Egyptian Electricity Holding Company Smart Grid Implementation</p>
-        </div>
-    """,
-        unsafe_allow_html=True,
-    )
-
     st.markdown(
         '<div class="project-workspace-container">', unsafe_allow_html=True
     )
+    st.title(f"📌 {code}: {proj_name}")
     st.info(f"Workspace reserved for project `{code}`.")
     st.markdown("</div>", unsafe_allow_html=True)
