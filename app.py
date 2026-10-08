@@ -1,4 +1,5 @@
 import base64
+import glob
 import os
 import streamlit as st
 
@@ -11,32 +12,43 @@ st.set_page_config(
 )
 
 
+# Helper function to find existing file regardless of single/double extensions (.jpg.png, .png.png, etc.)
+def find_existing_image(base_path):
+    if os.path.exists(base_path):
+        return base_path
+
+    # Extract base name without any extension
+    folder, filename = os.path.split(base_path)
+    clean_name = filename.split(".")[0]
+
+    # Look for matching pattern in the images directory
+    search_pattern = os.path.join(folder, f"{clean_name}*")
+    matches = glob.glob(search_pattern)
+
+    if matches:
+        return matches[0]
+
+    return None
+
+
 # Helper function to safely encode local images to Base64
 def get_base64_image(image_path):
-    if os.path.exists(image_path):
-        with open(image_path, "rb") as img_file:
+    real_path = find_existing_image(image_path)
+    if real_path and os.path.exists(real_path):
+        with open(real_path, "rb") as img_file:
             return base64.b64encode(img_file.read()).decode("utf-8")
     return ""
 
 
 # Helper function to safely render local images with custom width option
 def display_safe_image(file_path, caption="", width=None):
-    # Check both .png and .jpg variants if exact path fails
-    target_path = file_path
-    if not os.path.exists(target_path):
-        alt_path = (
-            file_path.replace(".jpg", ".png")
-            if ".jpg" in file_path
-            else file_path.replace(".png", ".jpg")
-        )
-        if os.path.exists(alt_path):
-            target_path = alt_path
+    real_path = find_existing_image(file_path)
 
-    if os.path.exists(target_path):
+    if real_path and os.path.exists(real_path):
         if width:
-            st.image(target_path, caption=caption, width=width)
+            st.image(real_path, caption=caption, width=width)
         else:
-            st.image(target_path, caption=caption, use_container_width=True)
+            st.image(real_path, caption=caption, use_container_width=True)
     else:
         st.warning(f"⚠️ Image file missing: `{file_path}`")
 
@@ -340,7 +352,7 @@ def set_horizon(horizon):
 
 # 5. Sidebar
 with st.sidebar:
-    display_safe_image("images/giz_logo.png")
+    display_safe_image("images/giz_logo")
     st.title("⚡ EEHC GIS Control")
     st.markdown("**Egyptian Electricity Holding Company**")
     st.divider()
@@ -486,11 +498,10 @@ elif st.session_state.selected_project == "IF2":
             """)
 
         st.write("")
-        # Center and shrink the Strategic Objectives image
         col_space_l, col_img_center, col_space_r = st.columns([1, 2, 1])
         with col_img_center:
             display_safe_image(
-                "images/01_Strategic_objectives_Asset_record.png",
+                "images/01_Strategic_objectives_Asset_record",
                 caption="Strategic Objectives Schema & Asset Record Workflow",
                 width=550,
             )
@@ -555,7 +566,7 @@ elif st.session_state.selected_project == "IF2":
                 * **Proof of Connection:** Smouha pilot completed with 7-person trained R&D team[cite: 1].
                 """)
                 display_safe_image(
-                    "images/02_Established_central_GIS_foundation.png",
+                    "images/02_Established_central_GIS_foundation",
                     caption="Smouha Proof of Connection Interface",
                 )
                 st.markdown(
@@ -571,7 +582,7 @@ elif st.session_state.selected_project == "IF2":
                 * **Outcome:** Accepted MV components with verified coordinates & connectivity[cite: 1].
                 """)
                 display_safe_image(
-                    "images/03_MV_network_drawing_and_acceptance.png",
+                    "images/03_MV_network_drawing_and_acceptance",
                     caption="MV Component Placement & Connectivity Drawing",
                 )
                 st.markdown(
@@ -590,7 +601,7 @@ elif st.session_state.selected_project == "IF2":
                 * **Monitoring:** Executive dashboards showing accepted coverage, exceptions, and backlog[cite: 1].
                 """)
                 display_safe_image(
-                    "images/04_Continuous_updates_and_rollout_monitoring.png",
+                    "images/04_Continuous_updates_and_rollout_monitoring",
                     caption="GIS Rollout Executive Dashboard",
                 )
                 st.markdown(
@@ -604,7 +615,7 @@ elif st.session_state.selected_project == "IF2":
                 * **Integrated Grid Example:** Located components, connected MV feeders, and shared asset IDs across DISCOs[cite: 1].
                 """)
                 display_safe_image(
-                    "images/05_Expected_short_term_network_record.png",
+                    "images/05_Expected_short_term_network_record",
                     caption="Alexandria Network Record Overview",
                 )
                 st.markdown(
@@ -630,7 +641,7 @@ elif st.session_state.selected_project == "IF2":
                     "Extend accepted MV records down to all LV components and customer service links[cite: 1]."
                 )
                 display_safe_image(
-                    "images/06_LV_network_expansion.png",
+                    "images/06_LV_network_expansion",
                     caption="LV Pillar & Service Box Mapping",
                 )
 
@@ -639,7 +650,7 @@ elif st.session_state.selected_project == "IF2":
                     "Link mapped components to condition status, inspection logs, and SQL work orders[cite: 1]."
                 )
                 display_safe_image(
-                    "images/07_Asset_Management_and_Maintenance.png",
+                    "images/07_Asset_Management_and_Maintenance",
                     caption="Transformer Condition & Risk Inspection",
                 )
 
@@ -650,7 +661,7 @@ elif st.session_state.selected_project == "IF2":
                     "Compare energy across feeder, transformer, and customer boundaries to locate losses[cite: 1]."
                 )
                 display_safe_image(
-                    "images/10_Loss_Analysis_and_Energy_Cost_Visibility.png",
+                    "images/10_Loss_Analysis_and_Energy_Cost_Visibility",
                     caption="Energy Imbalance & Loss Boundary Map",
                 )
 
@@ -660,7 +671,7 @@ elif st.session_state.selected_project == "IF2":
                     "Route maintenance crews dynamically against network outage points[cite: 1]."
                 )
                 display_safe_image(
-                    "images/08_Fleet_and_Field_Workforce_Management.png",
+                    "images/08_Fleet_and_Field_Workforce_Management",
                     caption="Workforce Routing & Incident Tasks",
                 )
 
@@ -669,7 +680,7 @@ elif st.session_state.selected_project == "IF2":
                     "Link customer incidents to affected grid feeder areas for faster restoration[cite: 1]."
                 )
                 display_safe_image(
-                    "images/09_Outage_Management_System.png",
+                    "images/09_Outage_Management_System",
                     caption="OMS Incident Isolation & Feeder Tracing",
                 )
 
@@ -680,11 +691,11 @@ elif st.session_state.selected_project == "IF2":
                     "Screen PV/EV connection headroom and evaluate Battery Storage (BESS) locations[cite: 1]."
                 )
                 display_safe_image(
-                    "images/11_Renewable_Energy_and_EV_Connection_Planning.png",
+                    "images/11_Renewable_Energy_and_EV_Connection_Planning",
                     caption="Renewable Capacity Headroom",
                 )
                 display_safe_image(
-                    "images/13_Battery_Energy_Storage_for_Grid_Support.png",
+                    "images/13_Battery_Energy_Storage_for_Grid_Support",
                     caption="BESS Location Screening",
                 )
 
@@ -706,7 +717,7 @@ elif st.session_state.selected_project == "IF2":
                     "Use maintained GIS topology inside Advanced Distribution Management Systems for automated switching[cite: 1]."
                 )
                 display_safe_image(
-                    "images/14_ADMS_and_Restoration_Automation.png",
+                    "images/14_ADMS_and_Restoration_Automation",
                     caption="Automated Fault Isolation & Restoration Pathway",
                 )
 
@@ -715,7 +726,7 @@ elif st.session_state.selected_project == "IF2":
                     "Study volt/VAR control options across distribution feeders[cite: 1]."
                 )
                 display_safe_image(
-                    "images/15_Voltage_Optimization_and_Peak_Management.png",
+                    "images/15_Voltage_Optimization_and_Peak_Management",
                     caption="Voltage Profile & Reactive Power Monitoring",
                 )
 
@@ -727,7 +738,7 @@ elif st.session_state.selected_project == "IF2":
                     "Link all smart meters precisely to their supply transformer and feeder[cite: 1]."
                 )
                 display_safe_image(
-                    "images/16_Advanced_Metering_Infrastructure_Integration.png",
+                    "images/16_Advanced_Metering_Infrastructure_Integration",
                     caption="Meter-to-Transformer Spatial Topology",
                 )
 
