@@ -412,7 +412,7 @@ if st.session_state.selected_project == "Dashboard Home":
         """
         <div class="roadmap-banner">
             <h1>Smart Grid Roadmap</h1>
-            <p style="color: #2563EB !important; font-weight: 700;">5 domains • 26 projects • 9 potential benefits | EEHC and Egypt's nine DISCOs</p>
+            <p style="color: #334155 !important; font-weight: 700;">5 domains • 26 projects • 9 potential benefits | EEHC and Egypt's nine DISCOs</p>
         </div>
     """,
         unsafe_allow_html=True,
