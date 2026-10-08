@@ -457,26 +457,29 @@ elif st.session_state.selected_project == "IF2":
         "📊 Monitoring & Apps",
     ])
 
-    # --- TAB 1: EXECUTIVE OVERVIEW ---
-    with t1:
-        st.subheader("Strategic Objectives")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("""
-            * **Unified Network Record:** Nine DISCOs operating on one common standard model[cite: 1].
-            * **Trusted Network Data:** Verified geographic locations and stable asset identities[cite: 1].
-            """)
-        with c2:
-            st.markdown("""
-            * **Continuous Updates:** Workflow covering field capture ➔ verify ➔ approve ➔ publish[cite: 1].
-            * **Sector Applications:** Powering asset management, operations, OMS, and grid planning[cite: 1].
-            """)
+  # --- TAB 1: EXECUTIVE OVERVIEW ---
+with t1:
+    st.subheader("Strategic Objectives")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("""
+        * **Unified Network Record:** Nine DISCOs operating on one common standard model.
+        * **Trusted Network Data:** Verified geographic locations and stable asset identities.
+        """)
+    with c2:
+        st.markdown("""
+        * **Continuous Updates:** Workflow covering field capture ➔ verify ➔ approve ➔ publish.
+        * **Sector Applications:** Powering asset management, operations, OMS, and grid planning.
+        """)
 
+    # --- ADJUST IMAGE SIZE HERE USING COLUMNS ---
+    # Change [1, 2, 1] to [1, 3, 1] for larger, or [1, 1, 1] for smaller center image
+    col_left, col_center, col_right = st.columns([1, 2, 1])
+    with col_center:
         display_safe_image(
-            "images/01_Strategic_objectives_Asset_record.png",
-            caption="Strategic Objectives Schema & Asset Record Workflow",
+            "images/01_Strategic_objectives_Asset_record.png", 
+            caption="Strategic Objectives Schema & Asset Record Workflow"
         )
-
     # --- TAB 2: DELIVERY ROADMAP WITH CLICKABLE HORIZON ICONS ---
     with t2:
         st.subheader("Delivery Roadmap Horizons")
