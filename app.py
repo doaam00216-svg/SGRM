@@ -104,12 +104,13 @@ st.markdown(
         font-weight: 800;
         margin: 0;
     }}
-    .roadmap-banner p {{
-        color: #94A3B8;
+    .roadmap-banner p {
+        color: #475569 !important; /* Change to your preferred gray hex code */
         font-size: 1.05rem;
+        font-weight: 700;
         margin-top: 6px;
         margin-bottom: 0;
-    }}
+    }
     /* Project Header Banner (Switches to City Skyline Header) */
     .project-banner {{
         background: linear-gradient(135deg, rgba(15,23,42,0.40) 0%, rgba(30,41,59,0.40) 100%), 
@@ -412,7 +413,7 @@ if st.session_state.selected_project == "Dashboard Home":
         """
        <div class="roadmap-banner">
     <h1>Smart Grid Roadmap</h1>
-    <p style="color: #1E293B !important; font-weight: 700;">5 domains • 26 projects • 9 potential benefits | EEHC and Egypt's nine DISCOs</p>
+    <p>5 domains • 26 projects • 9 potential benefits | EEHC and Egypt's nine DISCOs</p>
 </div>
     """,
         unsafe_allow_html=True,
