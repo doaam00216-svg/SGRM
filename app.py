@@ -85,36 +85,34 @@ st.markdown(
         pointer-events: none;
         z-index: 0;
     }}
-    /* Main Roadmap Top Banner (Fits EEHC Photo Inside Box & Darker Subtitle) */
+    /* Main Roadmap Top Banner (EEHC Banner Header) */
     .roadmap-banner {{
-        background-image: url('data:image/png;base64,{eehc_b64}');
+        background: linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(30,41,59,0.85) 100%), 
+                    url('data:image/png;base64,{eehc_b64}');
         background-repeat: no-repeat;
-        background-position: right center;
-        background-size: contain;
-        background-color: #F1F5F9;
-        border: 1px solid #CBD5E1;
+        background-position: center right;
+        background-size: cover;
         border-radius: 16px;
         padding: 28px 32px;
+        color: white;
         margin-bottom: 24px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
     }}
     .roadmap-banner h1 {{
-        color: #0F172A !important;
+        color: #FFFFFF !important;
         font-size: 2.2rem;
         font-weight: 800;
         margin: 0;
     }}
     .roadmap-banner p {{
-        color: #1E293B !important; /* Darker slate color for high visibility */
+        color: #94A3B8;
         font-size: 1.05rem;
-        font-weight: 700;
         margin-top: 6px;
         margin-bottom: 0;
-        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     }}
-    /* Project Header Banner */
+    /* Project Header Banner (Switches to City Skyline Header) */
     .project-banner {{
-        background: linear-gradient(135deg, rgba(15,23,42,0.40) 0%, rgba(30,41,59,0.40) 100%), 
+        background: linear-gradient(135deg, rgba(37,99,235,0.9) 0%, rgba(29,78,216,0.9) 100%), 
                     url('data:image/png;base64,{skyline_b64}');
         background-repeat: no-repeat;
         background-position: center right;
@@ -130,7 +128,6 @@ st.markdown(
         color: #FFFFFF !important;
         margin-top: 8px;
         margin-bottom: 4px;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.6);
     }}
     .domain-header {{
         border-radius: 12px 12px 0 0;
