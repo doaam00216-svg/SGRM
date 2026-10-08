@@ -10,26 +10,23 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ---------------------------------------------------------
-# UPDATE THESE TWO VARIABLES WITH YOUR GITHUB DETAILS:
-# ---------------------------------------------------------
-GITHUB_USER = "YOUR_GITHUB_USERNAME"
-GITHUB_REPO = "YOUR_REPO_NAME"
-BRANCH = "main"
+# Direct URLs to images stored in your repository README
+GIZ_LOGO_URL = "https://github.com/user-attachments/assets/ee083587-4ccf-4a3b-b9fa-aecbc1b1d92a"
+EEHC_BANNER_URL = "https://github.com/user-attachments/assets/6e2cbda8-2dbb-43fb-b3e1-d2f62cbbaab9"
+SKYLINE_WATERMARK_URL = "https://github.com/user-attachments/assets/2c15ab31-e4eb-44c7-a9a3-c19d4b306fc2"
 
-# Direct URL endpoint to your GitHub raw assets
-RAW_IMG_URL = (
-    f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/{BRANCH}/images/"
+# Local/GitHub fallback helper
+RAW_IMG_BASE = (
+    "https://raw.githubusercontent.com/doaam00216-svg/SGRM/main/images/"
 )
 
 
 def display_img(file_name, caption=None, use_container_width=True):
-    """Displays image directly via GitHub raw URL with local fallback."""
-    url = RAW_IMG_URL + file_name
+    """Displays slide image with fallback handling."""
+    url = RAW_IMG_BASE + file_name
     try:
         st.image(url, caption=caption, use_container_width=use_container_width)
     except Exception:
-        # Local relative fallback
         st.image(
             f"images/{file_name}",
             caption=caption,
@@ -38,7 +35,7 @@ def display_img(file_name, caption=None, use_container_width=True):
 
 
 # =========================================================
-# 2. PRESENTATION MATCHED WHITE THEME & BRANDING CSS
+# 2. PRESENTATION MATCHED WHITE THEME & SKYLINE BACKGROUND CSS
 # =========================================================
 st.markdown(
     f"""
@@ -57,23 +54,23 @@ st.markdown(
         left: 0;
         right: 0;
         height: 110px;
-        background-image: url('{RAW_IMG_URL}skyline_footer.png');
+        background-image: url('{SKYLINE_WATERMARK_URL}');
         background-repeat: repeat-x;
         background-position: bottom center;
         background-size: contain;
-        opacity: 0.25;
+        opacity: 0.30;
         pointer-events: none;
         z-index: 0;
     }}
 
-    /* Typography & Corporate Headers */
+    /* Corporate Typography */
     h1, h2, h3, h4 {{
         color: #0d3b66 !important;
         font-family: 'Segoe UI', Arial, sans-serif;
         font-weight: 700;
     }}
 
-    /* Custom Phase Tabs */
+    /* Tabs Styling */
     .stTabs [data-baseweb="tab-list"] {{
         background-color: #f8f9fa;
         border-bottom: 2px solid #dee2e6;
@@ -87,7 +84,7 @@ st.markdown(
     }}
 
     .stTabs [aria-selected="true"] {{
-        color: #d90429 !important; /* Red Highlight */
+        color: #d90429 !important; /* GIZ Red Highlight */
         background-color: #ffffff !important;
         border-bottom: 3px solid #d90429 !important;
     }}
@@ -97,15 +94,19 @@ st.markdown(
 )
 
 # =========================================================
-# 3. BRANDED HEADER BANNER
+# 3. BRANDED HEADER BANNER (GIZ & EEHC GRAPHICS)
 # =========================================================
 head_col1, head_col2 = st.columns([1, 3.5])
 
 with head_col1:
-    display_img("giz_logo.png", caption="In cooperation with GIZ")
+    st.image(
+        GIZ_LOGO_URL,
+        caption="In cooperation with GIZ",
+        use_container_width=True,
+    )
 
 with head_col2:
-    display_img("eehc_header_banner.png")
+    st.image(EEHC_BANNER_URL, use_container_width=True)
 
 st.markdown("---")
 
@@ -148,7 +149,7 @@ with tab_short:
         with col_s_a:
             st.markdown("""
             **1. Enterprise GIS Foundation**
-            - Centralized GIS Schema across EEHC.
+            - Establish Centralized GIS Schema across EEHC.
             - Standardize MV grid topology data model.
             - Execute digital vectorization for feeders, kiosks, and substations.
             
