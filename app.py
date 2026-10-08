@@ -75,42 +75,44 @@ st.markdown(
         position: fixed;
         bottom: 20px;
         right: 20px;
-        width: 280px;
-        height: 190px;
+        width: 180px;
+        height: 90px;
         background-image: url('data:image/png;base64,{giz_b64}');
         background-repeat: no-repeat;
         background-position: bottom right;
         background-size: contain;
-        opacity: 0.40;
+        opacity: 0.25;
         pointer-events: none;
         z-index: 0;
     }}
-    /* Main Roadmap Top Banner (EEHC Banner Header) */
+    /* Main Roadmap Top Banner (Fits EEHC Photo Inside Box & Darker Subtitle) */
     .roadmap-banner {{
-        background: linear-gradient(135deg, rgba(15,23,42,0.50) 0%, rgba(30,41,59,0.50) 100%),
-                    url('data:image/png;base64,{eehc_b64}');
+        background-image: url('data:image/png;base64,{eehc_b64}');
         background-repeat: no-repeat;
-        background-position: center right;
-        background-size: cover;
+        background-position: right center;
+        background-size: contain;
+        background-color: #F1F5F9;
+        border: 1px solid #CBD5E1;
         border-radius: 16px;
         padding: 28px 32px;
-        color: white;
         margin-bottom: 24px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }}
     .roadmap-banner h1 {{
-        color: #FFFFFF !important;
+        color: #0F172A !important;
         font-size: 2.2rem;
         font-weight: 800;
         margin: 0;
     }}
     .roadmap-banner p {{
-        color: #94A3B8;
+        color: #1E293B !important; /* Darker slate color for high visibility */
         font-size: 1.05rem;
+        font-weight: 700;
         margin-top: 6px;
         margin-bottom: 0;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     }}
-    /* Project Header Banner (Switches to City Skyline Header) */
+    /* Project Header Banner */
     .project-banner {{
         background: linear-gradient(135deg, rgba(15,23,42,0.40) 0%, rgba(30,41,59,0.40) 100%), 
                     url('data:image/png;base64,{skyline_b64}');
@@ -128,6 +130,7 @@ st.markdown(
         color: #FFFFFF !important;
         margin-top: 8px;
         margin-bottom: 4px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.6);
     }}
     .domain-header {{
         border-radius: 12px 12px 0 0;
