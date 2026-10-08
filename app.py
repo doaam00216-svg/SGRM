@@ -19,10 +19,13 @@ def get_base64_image(image_path):
     return ""
 
 
-# Helper function to safely render local images or warning if file missing
-def display_safe_image(file_path, caption=""):
+# Helper function to safely render local images with width option
+def display_safe_image(file_path, caption="", width=None):
     if os.path.exists(file_path):
-        st.image(file_path, caption=caption, use_container_width=True)
+        if width:
+            st.image(file_path, caption=caption, width=width)
+        else:
+            st.image(file_path, caption=caption, use_container_width=True)
     else:
         st.warning(f"⚠️ Image file missing: `{file_path}`")
 
@@ -355,7 +358,7 @@ with st.sidebar:
                     select_project(proj["code"])
                     st.rerun()
 
-# 6. Main Roadmap Dashboard
+# 6. Main Routing Logic
 if st.session_state.selected_project == "Dashboard Home":
 
     st.markdown(
@@ -427,7 +430,6 @@ if st.session_state.selected_project == "Dashboard Home":
         "🔴 **⭕ 12 Support Projects** enable delivery | 🔵 **14 Direct Projects** deliver assessed benefits"
     )
 
-# 7. Detailed View (IF2: GIS Rollout) with local images & interactive horizon icons
 elif st.session_state.selected_project == "IF2":
 
     st.button(
@@ -449,7 +451,6 @@ elif st.session_state.selected_project == "IF2":
 
     st.write("")
 
-    # 4 Main Categories
     t1, t2, t3, t4 = st.tabs([
         "📌 Executive Overview",
         "🗺️ Delivery Roadmap",
@@ -457,37 +458,33 @@ elif st.session_state.selected_project == "IF2":
         "📊 Monitoring & Apps",
     ])
 
-  # --- TAB 1: EXECUTIVE OVERVIEW ---
-with t1:
-    st.subheader("Strategic Objectives")
-    c1, c2 = st.columns(2)
-    with c1:
-        st.markdown("""
-        * **Unified Network Record:** Nine DISCOs operating on one common standard model.
-        * **Trusted Network Data:** Verified geographic locations and stable asset identities.
-        """)
-    with c2:
-        st.markdown("""
-        * **Continuous Updates:** Workflow covering field capture ➔ verify ➔ approve ➔ publish.
-        * **Sector Applications:** Powering asset management, operations, OMS, and grid planning.
-        """)
+    # TAB 1: EXECUTIVE OVERVIEW
+    with t1:
+        st.subheader("Strategic Objectives")
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("""
+            * **Unified Network Record:** Nine DISCOs operating on one common standard model[cite: 1].
+            * **Trusted Network Data:** Verified geographic locations and stable asset identities[cite: 1].
+            """)
+        with c2:
+            st.markdown("""
+            * **Continuous Updates:** Workflow covering field capture ➔ verify ➔ approve ➔ publish[cite: 1].
+            * **Sector Applications:** Powering asset management, operations, OMS, and grid planning[cite: 1].
+            """)
 
-    # --- ADJUST IMAGE SIZE HERE USING COLUMNS ---
-    # Change [1, 2, 1] to [1, 3, 1] for larger, or [1, 1, 1] for smaller center image
-    col_left, col_center, col_right = st.columns([1, 2, 1])
-    with col_center:
         display_safe_image(
-            "images/01_Strategic_objectives_Asset_record.png", 
-            caption="Strategic Objectives Schema & Asset Record Workflow"
+            "images/01_Strategic_objectives_Asset_record.png",
+            caption="Strategic Objectives Schema & Asset Record Workflow",
         )
-    # --- TAB 2: DELIVERY ROADMAP WITH CLICKABLE HORIZON ICONS ---
+
+    # TAB 2: DELIVERY ROADMAP
     with t2:
         st.subheader("Delivery Roadmap Horizons")
         st.write(
             "Click a horizon icon below to view its specific milestones, deliverables, and architecture visual artifacts:"
         )
 
-        # 3 Clickable Horizon Icon Buttons
         h_col1, h_col2, h_col3 = st.columns(3)
         with h_col1:
             is_active = st.session_state.active_horizon == "short"
@@ -521,7 +518,6 @@ with t1:
 
         st.markdown("---")
 
-        # --- DYNAMIC CONTENT BASED ON CLICKED HORIZON ICON ---
         if st.session_state.active_horizon == "short":
             st.markdown(
                 """
@@ -718,7 +714,7 @@ with t1:
                     caption="Meter-to-Transformer Spatial Topology",
                 )
 
-    # --- TAB 3: DISCO READINESS ROUTES ---
+    # TAB 3: DISCO READINESS ROUTES
     with t3:
         st.subheader("Three Integration Routes for DISCOs")
         st.markdown("""
@@ -727,14 +723,13 @@ with t1:
         3. **No GIS:** Survey components from scratch, build local team capacity, utilize central platform[cite: 1].
         """)
 
-    # --- TAB 4: MONITORING & APPS ---
+    # TAB 4: MONITORING & APPS
     with t4:
         st.subheader("Continuous Update & Monitoring Workflow")
         st.info(
             "Field change ➔ DISCO Verification ➔ Joint Acceptance QA Checklist ➔ Publish in SQL/GIS[cite: 1]"
         )
 
-# 8. Reserved Workspace View for Other Projects
 else:
     st.button(
         "← Back to Roadmap Dashboard",
