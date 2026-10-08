@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 
 # =========================================================
@@ -7,8 +8,22 @@ st.set_page_config(
     page_title="EEHC GIS Strategic Roadmap", layout="wide", page_icon="⚡"
 )
 
-# Base GitHub raw URL for images (replace <YOUR_GITHUB_USERNAME> and <YOUR_REPO_NAME> if needed)
-IMAGE_BASE_URL = "images/"
+# Set base folder path for images
+IMAGE_DIR = "images"
+
+
+# Helper function to render images safely without raising FileNotFoundError
+def safe_image(file_name, caption=None, use_container_width=True):
+    path = os.path.join(IMAGE_DIR, file_name)
+    if os.path.exists(path):
+        st.image(path, caption=caption, use_container_width=use_container_width)
+    elif os.path.exists(file_name):  # Check root directory as fallback
+        st.image(
+            file_name, caption=caption, use_container_width=use_container_width
+        )
+    else:
+        st.info(f"📷 Image `{file_name}` (Upload to `images/` directory)")
+
 
 # =========================================================
 # 2. WHITE THEME & SKYLINE BACKGROUND CSS
@@ -82,16 +97,10 @@ st.markdown(
 header_col1, header_col2 = st.columns([1, 4])
 
 with header_col1:
-    # GIZ Skyline & Logo
-    st.image(
-        IMAGE_BASE_URL + "giz_logo.png",
-        use_container_width=True,
-        caption="In cooperation with GIZ",
-    )
+    safe_image("giz_logo.png", caption="In cooperation with GIZ")
 
 with header_col2:
-    # EEHC Distribution Network Map Banner
-    st.image(IMAGE_BASE_URL + "eehc_header_banner.png", use_container_width=True)
+    safe_image("eehc_header_banner.png")
 
 st.markdown("---")
 
@@ -138,39 +147,34 @@ with tab_short:
 
     with col_s1:
         st.markdown("#### 1. Asset Record Concept")
-        st.image(
-            IMAGE_BASE_URL + "01_asset_record.png",
+        safe_image(
+            "01_asset_record.png",
             caption="Red MV grid topology map with asset attribute record fields",
-            use_container_width=True,
         )
 
         st.markdown("#### 3. MV Network Drawing")
-        st.image(
-            IMAGE_BASE_URL + "03_mv_drawing.png",
+        safe_image(
+            "03_mv_drawing.png",
             caption="GIS mapping canvas displaying MV nodes along Mohamed Abu El Fetouh Hassab St.",
-            use_container_width=True,
         )
 
     with col_s2:
         st.markdown("#### 2. Smouha Web GIS Interface")
-        st.image(
-            IMAGE_BASE_URL + "02_smouha_web.png",
+        safe_image(
+            "02_smouha_web.png",
             caption="Interactive vector map showing kiosk ALX-MAC-10-K0475 in Smouha",
-            use_container_width=True,
         )
 
         st.markdown("#### 4. GIS Rollout Dashboard")
-        st.image(
-            IMAGE_BASE_URL + "04_gis_monitoring.png",
+        safe_image(
+            "04_gis_monitoring.png",
             caption="City-wide monitoring showing Accepted, Under Review, and Exception feeders",
-            use_container_width=True,
         )
 
     st.markdown("#### 5. Alexandria Distribution Network Map")
-    st.image(
-        IMAGE_BASE_URL + "05_alexandria_map.png",
+    safe_image(
+        "05_alexandria_map.png",
         caption="Overview map of Alexandria regional distribution network (منطقة الإسكندرية)",
-        use_container_width=True,
     )
 
 # ---------------------------------------------------------
@@ -195,60 +199,52 @@ with tab_medium:
 
     with col_m1:
         st.markdown("#### 6. LV Network Expansion")
-        st.image(
-            IMAGE_BASE_URL + "06_lv_expansion.png",
+        safe_image(
+            "06_lv_expansion.png",
             caption="Wall box mapping along Qanal El Mahmoudeya Street",
-            use_container_width=True,
         )
 
         st.markdown("#### 8. Field Workforce Dispatch")
-        st.image(
-            IMAGE_BASE_URL + "08_fleet_workforce.png",
+        safe_image(
+            "08_fleet_workforce.png",
             caption="Vehicle dispatching and route tracking interface",
-            use_container_width=True,
         )
 
         st.markdown("#### 10. Loss Analysis & Energy Costing")
-        st.image(
-            IMAGE_BASE_URL + "10_loss_analysis.png",
+        safe_image(
+            "10_loss_analysis.png",
             caption="Metered boundaries and transformer imbalance zones",
-            use_container_width=True,
         )
 
         st.markdown("#### 12. Power Quality Response")
-        st.image(
-            IMAGE_BASE_URL + "12_power_quality.png",
+        safe_image(
+            "12_power_quality.png",
             caption="Feeder trace for voltage events and harmonics",
-            use_container_width=True,
         )
 
     with col_m2:
         st.markdown("#### 7. Asset Management Interface")
-        st.image(
-            IMAGE_BASE_URL + "07_asset_mgmt.png",
+        safe_image(
+            "07_asset_mgmt.png",
             caption="Transformer attribute interface (ELMACO 800 KVA)",
-            use_container_width=True,
         )
 
         st.markdown("#### 9. Outage Management System (OMS)")
-        st.image(
-            IMAGE_BASE_URL + "09_oms.png",
+        safe_image(
+            "09_oms.png",
             caption="Fault isolation and impacted customer tracing",
-            use_container_width=True,
         )
 
         st.markdown("#### 11. Renewable Connection Screening")
-        st.image(
-            IMAGE_BASE_URL + "11_renewable.png",
+        safe_image(
+            "11_renewable.png",
             caption="Grid capacity headroom map for solar/EV screening",
-            use_container_width=True,
         )
 
         st.markdown("#### 13. Battery Storage (BESS) Support")
-        st.image(
-            IMAGE_BASE_URL + "13_battery_storage.png",
+        safe_image(
+            "13_battery_storage.png",
             caption="BESS candidate site screening along constrained feeders",
-            use_container_width=True,
         )
 
 # ---------------------------------------------------------
@@ -271,23 +267,20 @@ with tab_long:
 
     with col_l1:
         st.markdown("#### 14. ADMS Restoration Automation")
-        st.image(
-            IMAGE_BASE_URL + "14_adms.png",
+        safe_image(
+            "14_adms.png",
             caption="Automated fault isolation and restoration switching option path",
-            use_container_width=True,
         )
 
         st.markdown("#### 16. Smart AMI Integration")
-        st.image(
-            IMAGE_BASE_URL + "16_ami_integration.png",
+        safe_image(
+            "16_ami_integration.png",
             caption="Smart meter mapping, real-time load profiles, and outage indications",
-            use_container_width=True,
         )
 
     with col_l2:
         st.markdown("#### 15. Voltage & Peak Management")
-        st.image(
-            IMAGE_BASE_URL + "15_voltage_optimization.png",
+        safe_image(
+            "15_voltage_optimization.png",
             caption="Voltage profile control and demand trace curve analytics",
-            use_container_width=True,
         )
