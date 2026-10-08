@@ -87,7 +87,7 @@ st.markdown(
     }}
     /* Main Roadmap Top Banner (EEHC Banner Header) */
     .roadmap-banner {{
-        background: linear-gradient(135deg, rgba(15,23,42,o.95) 0%, rgba(30,41,59,0.95) 100%), 
+        background: linear-gradient(135deg, rgba(15,23,42,o.85) 0%, rgba(30,41,59,0.85) 100%), 
                     url('data:image/png;base64,{eehc_b64}');
         background-repeat: no-repeat;
         background-position: center right;
@@ -112,7 +112,7 @@ st.markdown(
     }}
     /* Project Header Banner (Switches to City Skyline Header) */
     .project-banner {{
-        background: linear-gradient(135deg, rgba(37,99,235,0.95) 0%, rgba(29,78,216,0.95) 100%), 
+        background: linear-gradient(135deg, rgba(37,99,235,0.9) 0%, rgba(29,78,216,0.9) 100%), 
                     url('data:image/png;base64,{skyline_b64}');
         background-repeat: no-repeat;
         background-position: center right;
