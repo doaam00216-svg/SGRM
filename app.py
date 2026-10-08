@@ -1,4 +1,4 @@
-import base64
+import os
 import streamlit as st
 
 # =========================================================
@@ -11,152 +11,144 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Inline SVG representations of logo & header graphics (No external files needed)
-GIZ_LOGO_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" width="100%">
-  <rect width="300" height="80" fill="#ffffff"/>
-  <text x="20" y="50" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#d90429">giz</text>
-  <text x="90" y="38" font-family="Arial, sans-serif" font-size="10" fill="#333333">Deutsche Gesellschaft</text>
-  <text x="90" y="50" font-family="Arial, sans-serif" font-size="10" fill="#333333">für Internationale</text>
-  <text x="90" y="62" font-family="Arial, sans-serif" font-size="10" fill="#333333">Zusammenarbeit (GIZ) GmbH</text>
-</svg>"""
+# Base path for local image assets
+IMAGE_DIR = "images"
 
-EEHC_BANNER_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 120" width="100%">
-  <rect width="800" height="120" fill="#f8f9fa" rx="8"/>
-  <text x="30" y="45" font-family="Segoe UI, Arial" font-size="22" font-weight="bold" fill="#0d3b66">EEHC Smart Grid Implementation Plan</text>
-  <text x="30" y="75" font-family="Segoe UI, Arial" font-size="14" fill="#495057">Egyptian Electricity Holding Company | 9 Distribution Companies</text>
-  <circle cx="700" cy="60" r="35" fill="#0d3b66" opacity="0.1"/>
-  <path d="M700 35 L685 65 L700 65 L695 85 L715 55 L700 55 Z" fill="#d90429"/>
-</svg>"""
 
-SKYLINE_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 100" preserveAspectRatio="none" width="100%">
-  <path d="M0,100 L0,80 L20,80 L20,50 L40,50 L40,80 L60,80 L60,30 L80,30 L80,80 L100,80 L100,60 L120,60 L120,100 Z" fill="#0d3b66" opacity="0.15"/>
-  <path d="M150,100 L150,40 L180,20 L210,40 L210,100 Z" fill="#0d3b66" opacity="0.12"/>
-  <path d="M250,100 L250,70 L280,70 L280,45 L310,45 L310,100 Z" fill="#0d3b66" opacity="0.15"/>
-  <path d="M400,100 L400,20 L410,10 L420,20 L420,100 Z" fill="#0d3b66" opacity="0.2"/>
-  <path d="M500,100 L500,60 L550,60 L550,100 Z" fill="#0d3b66" opacity="0.1"/>
-  <path d="M650,100 L650,30 L690,30 L690,100 Z" fill="#0d3b66" opacity="0.15"/>
-  <path d="M800,100 L800,50 L840,50 L840,100 Z" fill="#0d3b66" opacity="0.12"/>
-  <path d="M950,100 L950,25 L970,10 L990,25 L990,100 Z" fill="#0d3b66" opacity="0.18"/>
-  <path d="M1050,100 L1050,65 L1100,65 L1100,100 Z" fill="#0d3b66" opacity="0.1"/>
-</svg>"""
+def display_img(file_name, caption=None, use_container_width=True):
+    """Displays slide image safely with local fallback handling."""
+    path = os.path.join(IMAGE_DIR, file_name)
+    if os.path.exists(path):
+        st.image(path, caption=caption, use_container_width=use_container_width)
+    elif os.path.exists(file_name):
+        st.image(
+            file_name, caption=caption, use_container_width=use_container_width
+        )
+    else:
+        st.info(f"📌 **Map Visual:** `{file_name}` (Store in `images/` folder)")
 
-skyline_b64 = base64.b64encode(SKYLINE_SVG.encode("utf-8")).decode("utf-8")
-skyline_uri = f"data:image/svg+xml;base64,{skyline_b64}"
 
 # =========================================================
-# 2. PRESENTATION MATCHED WHITE THEME & SKYLINE BACKGROUND CSS
+# 2. CLEAN WHITE PRESENTATION THEME (NO BOTTOM WATERMARK)
 # =========================================================
 st.markdown(
-    f"""
+    """
     <style>
     /* Clean White Presentation Background */
-    .stApp {{
+    .stApp {
         background-color: #ffffff !important;
         color: #1a202c !important;
-    }}
-
-    /* Fixed City Skyline Watermark at the bottom */
-    .stApp::after {{
-        content: "";
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100px;
-        background-image: url('{skyline_uri}');
-        background-repeat: repeat-x;
-        background-position: bottom center;
-        background-size: contain;
-        pointer-events: none;
-        z-index: 0;
-    }}
+    }
 
     /* Corporate Typography */
-    h1, h2, h3, h4 {{
+    h1, h2, h3, h4 {
         color: #0d3b66 !important;
         font-family: 'Segoe UI', Arial, sans-serif;
         font-weight: 700;
-    }}
+    }
 
-    /* Phase Tabs Styling */
-    .stTabs [data-baseweb="tab-list"] {{
+    /* Custom Phase Tabs */
+    .stTabs [data-baseweb="tab-list"] {
         background-color: #f8f9fa;
         border-bottom: 2px solid #dee2e6;
         gap: 8px;
-    }}
+    }
     
-    .stTabs [data-baseweb="tab"] {{
+    .stTabs [data-baseweb="tab"] {
         color: #495057;
         font-weight: 600;
         padding: 12px 20px;
-    }}
+    }
 
-    .stTabs [aria-selected="true"] {{
+    .stTabs [aria-selected="true"] {
         color: #d90429 !important; /* GIZ Red Highlight */
         background-color: #ffffff !important;
         border-bottom: 3px solid #d90429 !important;
-    }}
+    }
+
+    /* Expander Container Styling */
+    .streamlit-expanderHeader {
+        background-color: #f1f5f9 !important;
+        border-radius: 6px;
+        color: #0f172a !important;
+        font-weight: 600;
+    }
     </style>
 """,
     unsafe_allow_html=True,
 )
 
 # =========================================================
-# 3. BRANDED HEADER BANNER
+# 3. BRANDED HEADER BANNER (GIZ + EEHC GRAPHICS)
 # =========================================================
 head_col1, head_col2 = st.columns([1, 3.5])
 
 with head_col1:
-    st.markdown(
-        f'<div style="text-align:center;">{GIZ_LOGO_SVG}</div>',
-        unsafe_allow_html=True,
-    )
-    st.caption("In cooperation with GIZ")
+    display_img("giz_logo.png", caption="In cooperation with GIZ")
 
 with head_col2:
-    st.markdown(
-        f"<div>{EEHC_BANNER_SVG}</div>",
-        unsafe_allow_html=True,
-    )
+    display_img("eehc_header_banner.png")
 
 st.markdown("---")
 
 # =========================================================
-# 4. DASHBOARD TITLE & METRICS
+# 4. OVERALL SMART GRID ROADMAP (SGRM FOUNDATION)
 # =========================================================
-st.title("⚡ EEHC Smart Grid Roadmap (SGRM)")
+st.title("⚡ EEHC Enterprise Smart Grid Roadmap (SGRM)")
 st.markdown(
-    "##### Egyptian Electricity Holding Company — Enterprise Smart Grid Implementation & GIS Integration Dashboard"
+    "##### Comprehensive Strategic Plan for Digital Transformation across Egyptian Electricity Distribution Companies (DISCOs)"
 )
 
+# Strategic Executive Metrics
 m1, m2, m3, m4, m5 = st.columns(5)
-m1.metric("Short-Term", "Jan 2026 – Jun 2027", "Foundation")
-m2.metric("Medium-Term", "Jun 2027 – May 2030", "Expansion")
-m3.metric("Long-Term", "May 2030+", "Smart Operations")
-m4.metric("DISCO Scope", "9 Distribution Co.", "EEHC Grid")
-m5.metric("Slide Visual Assets", "16 Map Proofs", "Verified")
+m1.metric("Short-Term Horizon", "2026 – 2027", "Central Foundation")
+m2.metric("Medium-Term Horizon", "2027 – 2030", "Operational Scale")
+m3.metric("Long-Term Horizon", "2030+", "Smart Operations")
+m4.metric("Scope", "9 DISCOs", "National Grid")
+m5.metric("GIS Visual Proofs", "16 Artifacts", "Verified")
 
 st.markdown("---")
 
+# Overall SGRM Core Strategic Pillars
+st.subheader("🏛️ SGRM Overall Strategic Pillars")
+p1, p2, p3, p4 = st.columns(4)
 
-def render_map_card(title, caption, map_id):
-    """Renders map cards cleanly with structured placeholder fallback."""
-    st.markdown(f"#### {title}")
-    st.markdown(
-        f"""
-        <div style="border: 2px dashed #cbd5e1; border-radius: 8px; padding: 25px; background-color: #f8fafc; text-align: center;">
-            <p style="font-size: 28px; margin: 0;">🗺️</p>
-            <p style="font-weight: bold; color: #0d3b66; margin: 5px 0;">{title}</p>
-            <p style="color: #64748b; font-size: 13px; margin: 0;">Map Asset ID: <code>{map_id}.png</code></p>
-        </div>
-    """,
-        unsafe_allow_html=True,
-    )
-    st.caption(caption)
+with p1:
+    st.markdown("""
+    **1. Enterprise GIS Core**
+    - Single source of grid truth
+    - MV/LV asset vectorization
+    - Dynamic network topology
+    """)
 
+with p2:
+    st.markdown("""
+    **2. SCADA & Automation**
+    - Master Control Centers
+    - Feeder Automation (RTUs)
+    - Substation Monitoring
+    """)
+
+with p3:
+    st.markdown("""
+    **3. AMI & Metering**
+    - Head-End System (HES)
+    - Billing & MDMS Sync
+    - High-Value Customer Meters
+    """)
+
+with p4:
+    st.markdown("""
+    **4. Smart Operations (ADMS)**
+    - Outage Management (OMS)
+    - FLISR Automated Restoration
+    - DER & Solar Headroom
+    """)
+
+st.markdown("---")
 
 # =========================================================
-# 5. FULL SMART GRID ROADMAP (PHASE TABS)
+# 5. PHASE-BY-PHASE SGRM & GIS IMPLEMENTATION TABS
 # =========================================================
 tab_short, tab_medium, tab_long = st.tabs([
     "🚩 Short-Term Phase (2026 – 2027)",
@@ -169,66 +161,60 @@ tab_short, tab_medium, tab_long = st.tabs([
 # ---------------------------------------------------------
 with tab_short:
     st.header(
-        "Short-Term Roadmap: Central GIS Foundation, Data Cleanup & Core Infrastructure"
+        "Short-Term Phase: Smart Grid Infrastructure & GIS Central Foundation"
     )
 
-    with st.expander("📌 Smart Grid Strategic Pillars (Short-Term)", expanded=True):
+    with st.expander("📌 SGRM Strategic Scope & Action Items", expanded=True):
         col_s_a, col_s_b = st.columns(2)
         with col_s_a:
             st.markdown("""
-            **1. Enterprise GIS Foundation**
-            - Establish Centralized GIS Schema across EEHC.
-            - Standardize MV grid topology data model.
-            - Execute digital vectorization for feeders, kiosks, and substations.
-            
-            **2. SCADA & Substation Automation**
+            **Smart Grid Architecture & IT Readiness**
+            - Establish Central Enterprise GIS Database Schema across EEHC.
+            - Standardize data models for Medium Voltage (MV) grid topology.
             - SCADA master station upgrades in high-priority zones.
-            - RTU integration for key MV distribution nodes.
             """)
         with col_s_b:
             st.markdown("""
-            **3. AMI & IT Readiness**
-            - Head-End System (HES) integration for commercial/industrial meters.
-            - IT/OT cybersecurity and data governance framework setup.
-            
-            **4. Organizational Capacity**
-            - Establish DISCO GIS verification teams and QC workflows.
+            **GIS Integration & Field Operations**
+            - Execute digital vectorization for feeders, kiosks, and substations.
+            - Deploy GIS Acceptance Dashboard to monitor DISCO digitizing progress.
+            - Integrate Head-End System (HES) for commercial and industrial meters.
             """)
 
     st.markdown("---")
-    st.subheader("🗺️ Short-Term Map Proofs & Systems")
+    st.subheader("🗺️ Short-Term Enterprise GIS Maps & Acceptance Screenshots")
 
     col_s1, col_s2 = st.columns(2)
     with col_s1:
-        render_map_card(
-            "1. Asset Record Concept Map",
-            "Red MV grid topology map with asset attribute records",
-            "01_asset_record",
+        st.markdown("#### 1. Asset Record Concept Map")
+        display_img(
+            "01_asset_record.png",
+            caption="Red MV grid topology map with asset attribute record fields",
         )
 
-        render_map_card(
-            "3. MV Network Drawing & Acceptance Map",
-            "GIS mapping canvas with MV network nodes along Mohamed Abu El Fetouh Hassab St.",
-            "03_mv_drawing",
+        st.markdown("#### 3. MV Network Drawing & Acceptance Map")
+        display_img(
+            "03_mv_drawing.png",
+            caption="GIS mapping canvas with MV network nodes along Mohamed Abu El Fetouh Hassab St.",
         )
 
     with col_s2:
-        render_map_card(
-            "2. Smouha GIS Web Interface",
-            "OpenStreetMap vector view showing kiosk details in Smouha",
-            "02_smouha_web",
+        st.markdown("#### 2. Smouha GIS Web Interface")
+        display_img(
+            "02_smouha_web.png",
+            caption="OpenStreetMap vector view showing kiosk details in Smouha",
         )
 
-        render_map_card(
-            "4. GIS Rollout Monitoring Dashboard",
-            "City-wide feeder acceptance tracking across Capture, Verify, Approve stages",
-            "04_gis_monitoring",
+        st.markdown("#### 4. GIS Rollout Monitoring Dashboard")
+        display_img(
+            "04_gis_monitoring.png",
+            caption="City-wide feeder acceptance tracking across Capture, Verify, Approve stages",
         )
 
-    render_map_card(
-        "5. Alexandria Regional Distribution Network Map",
-        "Overview of Alexandria regional distribution network (منطقة الإسكندرية)",
-        "05_alexandria_map",
+    st.markdown("#### 5. Alexandria Regional Distribution Network Map")
+    display_img(
+        "05_alexandria_map.png",
+        caption="Overview of Alexandria regional distribution network (منطقة الإسكندرية)",
     )
 
 # ---------------------------------------------------------
@@ -236,32 +222,30 @@ with tab_short:
 # ---------------------------------------------------------
 with tab_medium:
     st.header(
-        "Medium-Term Roadmap: Operational Applications, OMS & Grid Coverage"
+        "Medium-Term Phase: Grid Operations, OMS & Low-Voltage Coverage"
     )
 
-    with st.expander(
-        "📌 Smart Grid Strategic Pillars (Medium-Term)", expanded=True
-    ):
+    with st.expander("📌 SGRM Strategic Scope & Action Items", expanded=True):
         col_m_a, col_m_b = st.columns(2)
         with col_m_a:
             st.markdown("""
-            **1. Low-Voltage Network Digitization**
-            - Street-level LV wall box mapping and service connection tracing.
-            - Asset lifecycle parameter tracking (Transformers, RMUs).
+            **Low-Voltage Mapping & Asset Management**
+            - Complete street-level LV wall box mapping and service connection tracing.
+            - Full parameter tracking for transformers, RMUs, and distribution cabinets.
             
-            **2. OMS & Field Workforce**
-            - Deploy Outage Management Systems (OMS) for rapid fault isolation.
-            - Automated fleet dispatch and work order tracking.
+            **Outage Management & Fleet Dispatch**
+            - Deploy GIS-centric Outage Management System (OMS) for rapid fault location.
+            - Real-time field vehicle dispatching and work order management.
             """)
         with col_m_b:
             st.markdown("""
-            **3. Loss Analysis & Power Quality**
-            - Boundary Metering Zones for commercial and technical loss calculations.
-            - Continuous feeder trace monitoring for voltage events and harmonics.
+            **Loss Analytics & Energy Balance**
+            - Boundary Metering Zones for technical and commercial loss analysis.
+            - Feeder trace monitoring for power quality, unbalance, and harmonics.
             
-            **4. Renewable & DER Integration**
-            - Grid headroom screening maps for rooftop solar/EV interconnections.
-            - Battery storage (BESS) candidate site screening.
+            **DER & Grid Flexibility**
+            - Renewable screening maps for rooftop solar and EV charger connections.
+            - Battery Energy Storage System (BESS) site selection on constrained feeders.
             """)
 
     st.markdown("---")
@@ -269,53 +253,53 @@ with tab_medium:
 
     col_m1, col_m2 = st.columns(2)
     with col_m1:
-        render_map_card(
-            "6. Low-Voltage Network Expansion (Wall Boxes)",
-            "Street-level mapping of LV wall distribution boxes along Qanal El Mahmoudeya St.",
-            "06_lv_expansion",
+        st.markdown("#### 6. Low-Voltage Network Expansion (Wall Boxes)")
+        display_img(
+            "06_lv_expansion.png",
+            caption="Street-level mapping of LV wall distribution boxes along Qanal El Mahmoudeya St.",
         )
 
-        render_map_card(
-            "8. Fleet & Field Workforce Management",
-            "Real-time field vehicle dispatching and work location routing",
-            "08_fleet_workforce",
+        st.markdown("#### 8. Fleet & Field Workforce Management")
+        display_img(
+            "08_fleet_workforce.png",
+            caption="Real-time field vehicle dispatching and work location routing",
         )
 
-        render_map_card(
-            "10. Loss Analysis & Energy Cost Visibility",
-            "Metered boundary zones and transformer imbalance investigation areas",
-            "10_loss_analysis",
+        st.markdown("#### 10. Loss Analysis & Energy Cost Visibility")
+        display_img(
+            "10_loss_analysis.png",
+            caption="Metered boundary zones and transformer imbalance investigation areas",
         )
 
-        render_map_card(
-            "12. Power Quality Assessment & Response",
-            "Feeder trace monitoring for voltage events, unbalance, and harmonics",
-            "12_power_quality",
+        st.markdown("#### 12. Power Quality Assessment & Response")
+        display_img(
+            "12_power_quality.png",
+            caption="Feeder trace monitoring for voltage events, unbalance, and harmonics",
         )
 
     with col_m2:
-        render_map_card(
-            "7. Asset Management Interface",
-            "Interactive GIS view of transformer asset parameters (ELMACO 800 KVA)",
-            "07_asset_mgmt",
+        st.markdown("#### 7. Asset Management Interface")
+        display_img(
+            "07_asset_mgmt.png",
+            caption="Interactive GIS view of transformer asset parameters (ELMACO 800 KVA)",
         )
 
-        render_map_card(
-            "9. Outage Management System (OMS)",
-            "Fault trace schematic isolating impacted customer areas and feeder switches",
-            "09_oms",
+        st.markdown("#### 9. Outage Management System (OMS)")
+        display_img(
+            "09_oms.png",
+            caption="Fault trace schematic isolating impacted customer areas and feeder switches",
         )
 
-        render_map_card(
-            "11. Renewable & EV Connection Screening",
-            "Coastal grid headroom map highlighting constrained vs available capacity",
-            "11_renewable",
+        st.markdown("#### 11. Renewable & EV Connection Screening")
+        display_img(
+            "11_renewable.png",
+            caption="Coastal grid headroom map highlighting constrained vs available capacity",
         )
 
-        render_map_card(
-            "13. Battery Energy Storage System (BESS) Support",
-            "Candidate battery storage siting along constrained distribution feeders",
-            "13_battery_storage",
+        st.markdown("#### 13. Battery Energy Storage System (BESS) Support")
+        display_img(
+            "13_battery_storage.png",
+            caption="Candidate battery storage siting along constrained distribution feeders",
         )
 
 # ---------------------------------------------------------
@@ -323,26 +307,22 @@ with tab_medium:
 # ---------------------------------------------------------
 with tab_long:
     st.header(
-        "Long-Term Roadmap: Advanced ADMS, AMI Integration & Smart Operations"
+        "Long-Term Phase: Advanced ADMS, AMI Topology & Smart Grid Operations"
     )
 
-    with st.expander("📌 Smart Grid Strategic Pillars (Long-Term)", expanded=True):
+    with st.expander("📌 SGRM Strategic Scope & Action Items", expanded=True):
         col_l_a, col_l_b = st.columns(2)
         with col_l_a:
             st.markdown("""
-            **1. Advanced Distribution Management System (ADMS)**
-            - Unified ADMS control engine merging SCADA, GIS, and OMS.
+            **Advanced Distribution Management System (ADMS)**
+            - Seamless integration of SCADA, GIS, and OMS into a unified ADMS engine.
             - Fault Location, Isolation, and Service Restoration (FLISR) automation.
-            
-            **2. Voltage Optimization & Peak Shaving**
-            - Automated Volt-VAR Optimization (VVO).
-            - Dynamic peak shaving using demand-response analytics.
             """)
         with col_l_b:
             st.markdown("""
-            **3. Complete AMI Topology Sync**
-            - Meter-to-transformer topology mapping with real-time sync.
-            - Smart meter last-gasp automated outage detection.
+            **Smart AMI & Voltage Optimization**
+            - Automated Volt-VAR Optimization (VVO) and dynamic peak load shaving.
+            - Meter-to-transformer link mapping with real-time AMI connectivity sync.
             """)
 
     st.markdown("---")
@@ -350,21 +330,21 @@ with tab_long:
 
     col_l1, col_l2 = st.columns(2)
     with col_l1:
-        render_map_card(
-            "14. ADMS & Restoration Automation",
-            "Automated fault section isolation and switching restoration paths",
-            "14_adms",
+        st.markdown("#### 14. ADMS & Restoration Automation")
+        display_img(
+            "14_adms.png",
+            caption="Automated fault section isolation and switching restoration paths",
         )
 
-        render_map_card(
-            "16. Smart AMI Integration",
-            "Smart meter link mapping, outage indications, and load profile analytics",
-            "16_ami_integration",
+        st.markdown("#### 16. Smart AMI Integration")
+        display_img(
+            "16_ami_integration.png",
+            caption="Smart meter link mapping, outage indications, and load profile analytics",
         )
 
     with col_l2:
-        render_map_card(
-            "15. Voltage Optimization & Peak Management",
-            "Grid control assets, real-time voltage profiles, and demand trace curves",
-            "15_voltage_optimization",
+        st.markdown("#### 15. Voltage Optimization & Peak Management")
+        display_img(
+            "15_voltage_optimization.png",
+            caption="Grid control assets, real-time voltage profiles, and demand trace curves",
         )
