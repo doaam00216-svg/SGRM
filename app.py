@@ -323,7 +323,6 @@ DOMAINS = [
                 "code": "IF2",
                 "name": "Asset management design and implementation",
                 "type": "support",
-                "active": True,
             },
             {
                 "code": "IF3",
@@ -479,30 +478,14 @@ if st.session_state.selected_project == "Dashboard Home":
             st.caption(f"📌 {domain['count']}")
 
             for proj in domain["projects"]:
-                is_active = proj.get("active", False)
                 icon = "🔵" if proj["type"] == "direct" else "⭕"
-
-                if is_active:
-                    st.markdown(
-                        '<div class="gis-highlight">', unsafe_allow_html=True
-                    )
-                    if st.button(
-                        f"{icon} **{proj['code']}** - {proj['name']}",
-                        key=f"rm_{proj['code']}",
-                        use_container_width=True,
-                        type="primary",
-                    ):
-                        select_project(proj["code"])
-                        st.rerun()
-                    st.markdown("</div>", unsafe_allow_html=True)
-                else:
-                    if st.button(
-                        f"{icon} **{proj['code']}** - {proj['name']}",
-                        key=f"rm_{proj['code']}",
-                        use_container_width=True,
-                    ):
-                        select_project(proj["code"])
-                        st.rerun()
+                if st.button(
+                    f"{icon} **{proj['code']}** - {proj['name']}",
+                    key=f"rm_{proj['code']}",
+                    use_container_width=True,
+                ):
+                    select_project(proj["code"])
+                    st.rerun()
 
     st.markdown("---")
     st.subheader("Potential Benefits of the Smart-Grid Portfolio")
