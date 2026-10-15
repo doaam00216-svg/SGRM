@@ -74,7 +74,7 @@ st.markdown(
         background-color: #F8FAFC !important;
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }}
-    /* Fixed GIZ image in bottom-right corner */
+    /* Fixed GIZ logo in bottom-right corner */
     .stApp::after {{
         content: "";
         position: fixed;
@@ -90,7 +90,7 @@ st.markdown(
         pointer-events: none;
         z-index: 0;
     }}
-    /* Main Roadmap Top Banner - Restored to Original Gradient Overlay & Cover Fit */
+    /* Main Roadmap Top Banner */
     .roadmap-banner {{
         background: linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(30,41,59,0.85) 100%), 
                     url('data:image/png;base64,{eehc_b64}');
@@ -183,54 +183,56 @@ st.markdown(
         margin-bottom: 20px;
     }}
 
-    /* Vertical Tree Structure Styling for Supported Projects */
-    .tree-container {{
-        position: relative;
-        padding-left: 20px;
+    /* Non-Technical Executive Tree Visual Card */
+    .tree-card {{
+        background-color: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 12px;
+        padding: 18px 24px;
         margin-top: 12px;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }}
-    .tree-header {{
+    .tree-title {{
         display: inline-block;
         border: 2px solid #991B1B;
         color: #991B1B;
         background-color: #FEF2F2;
         border-radius: 20px;
-        padding: 6px 24px;
+        padding: 6px 20px;
         font-weight: 800;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         letter-spacing: 0.5px;
+        margin-bottom: 16px;
+    }}
+    .tree-branch-container {{
+        position: relative;
+        border-left: 3px solid #1E3A8A;
+        padding-left: 20px;
+        margin-left: 16px;
+    }}
+    .tree-item {{
+        position: relative;
         margin-bottom: 12px;
     }}
-    .tree-branch-wrapper {{
-        position: relative;
-        border-left: 3px solid #000000;
-        padding-left: 24px;
-        margin-left: 38px;
-    }}
-    .tree-node {{
-        position: relative;
-        margin-bottom: 12px;
-    }}
-    .tree-node::before {{
+    .tree-item::before {{
         content: "";
         position: absolute;
-        left: -24px;
+        left: -20px;
         top: 50%;
-        width: 20px;
+        width: 16px;
         height: 3px;
-        background-color: #000000;
+        background-color: #1E3A8A;
     }}
-    .tree-pill {{
+    .tree-item-badge {{
         display: inline-block;
-        border: 2px solid #1E40AF;
+        border: 1px solid #BFDBFE;
         color: #1E40AF;
         background-color: #EFF6FF;
-        border-radius: 20px;
-        padding: 6px 20px;
+        border-radius: 18px;
+        padding: 6px 18px;
         font-weight: 700;
         font-size: 0.88rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }}
     </style>
 """,
@@ -238,37 +240,24 @@ st.markdown(
 )
 
 
-# Helper function to render tree structure for supported projects
-def render_support_tree(project_key, main_task_name, supported_list):
-    key_state = f"show_support_{project_key}"
-    if key_state not in st.session_state:
-        st.session_state[key_state] = False
-
-    if st.button(
-        f"🔗 {main_task_name}",
-        key=f"btn_{project_key}",
-        use_container_width=False,
-    ):
-        st.session_state[key_state] = not st.session_state[key_state]
-        st.rerun()
-
-    if st.session_state[key_state]:
-        tree_html = f"""
-        <div class="tree-container">
-            <div class="tree-header">SUPPORTED PROJECTS</div>
-            <div class="tree-branch-wrapper">
-        """
-        for item in supported_list:
-            tree_html += f"""
-                <div class="tree-node">
-                    <div class="tree-pill">{item}</div>
-                </div>
-            """
-        tree_html += """
+# Non-technical visual tree component for supported projects
+def render_supported_projects_card(supported_list):
+    tree_html = """
+    <div class="tree-card">
+        <div class="tree-title">🎯 SUPPORTED PROJECTS</div>
+        <div class="tree-branch-container">
+    """
+    for item in supported_list:
+        tree_html += f"""
+            <div class="tree-item">
+                <div class="tree-item-badge">{item}</div>
             </div>
-        </div>
         """
-        st.markdown(tree_html, unsafe_allow_html=True)
+    tree_html += """
+        </div>
+    </div>
+    """
+    st.markdown(tree_html, unsafe_allow_html=True)
 
 
 # 3. Roadmap Data
@@ -557,19 +546,31 @@ elif st.session_state.selected_project == "IF1":
         unsafe_allow_html=True,
     )
 
-    render_support_tree("if1_p1", "250,000 Smart-Meter Pilot", [
-        "C2: AMI Lessons Learned",
-        "TE2: Integrated Solution Selection",
+    if1_tab1, if1_tab2, if1_tab3 = st.tabs([
+        "📊 250,000 Smart-Meter Pilot",
+        "📈 270,000-Meter Expansion",
+        "⚡ 410,000 Three-Phase Meters",
     ])
-    st.write("")
-    render_support_tree("if1_p2", "270,000-Meter Expansion", [
-        "TE3: Smart Meter Analytics (Loss Analytics)"
-    ])
-    st.write("")
-    render_support_tree("if1_p3", "410,000 Three-Phase Meters", [
-        "TE2: Integrated Solution Selection",
-        "TE3: Smart Meter Analytics",
-    ])
+
+    with if1_tab1:
+        st.subheader("250,000 Smart-Meter Pilot")
+        render_supported_projects_card([
+            "C2: Advanced Meter Infrastructure (AMI) Lessons Learned",
+            "TE2: Integrated Solution Selection",
+        ])
+
+    with if1_tab2:
+        st.subheader("270,000-Meter Expansion")
+        render_supported_projects_card([
+            "TE3: Smart Meter Analytics (Loss Analytics)"
+        ])
+
+    with if1_tab3:
+        st.subheader("410,000 Three-Phase Meters")
+        render_supported_projects_card([
+            "TE2: Integrated Solution Selection",
+            "TE3: Smart Meter Analytics",
+        ])
 
 elif st.session_state.selected_project == "IF2":
     st.button(
@@ -708,9 +709,8 @@ elif st.session_state.selected_project == "IF3":
     """,
         unsafe_allow_html=True,
     )
-    render_support_tree("if3_p1", "280,000 Single-Phase Meters", [
-        "TE2: Integrated Solution Selection"
-    ])
+    st.subheader("280,000 Single-Phase Meters")
+    render_supported_projects_card(["TE2: Integrated Solution Selection"])
 
 elif st.session_state.selected_project == "IF4":
     st.button(
@@ -762,7 +762,8 @@ elif st.session_state.selected_project == "TE1":
     """,
         unsafe_allow_html=True,
     )
-    render_support_tree("te1_p1", "Innovation Hub", [
+    st.subheader("Innovation Hub")
+    render_supported_projects_card([
         "PS2: Technical Standards and Regulation",
         "TE2: Integrated Solution Selection",
     ])
@@ -811,22 +812,23 @@ elif st.session_state.selected_project == "TE2":
             )
 
     with te2_tab2:
-        render_support_tree("te2_hes", "Unified Head-End System", [
+        st.subheader("Unified Head-End System")
+        st.markdown(
+            "Standardized multi-vendor meter communication interface across all DISCOs."
+        )
+        render_supported_projects_card([
             "PS3: Privacy and Customer Data Ownership",
             "PS4: Cybersecurity",
         ])
 
     with te2_tab3:
-        render_support_tree(
-            "te2_dcc",
-            "Distribution Control Centres (DCC)",
-            [
-                "IF2: Asset Management Design and Implementation",
-                "PS4: Cybersecurity",
-                "IF4: Asset Management and Monitoring",
-                "OS4: Smart Grid Governance",
-            ],
-        )
+        st.subheader("Distribution Control Centres (DCC)")
+        render_supported_projects_card([
+            "IF2: Asset Management Design and Implementation",
+            "PS4: Cybersecurity",
+            "IF4: Asset Management and Monitoring",
+            "OS4: Smart Grid Governance",
+        ])
 
         st.markdown("""
         * **Purpose & Scope:** Coordinated network operation across DCCs[cite: 4].
@@ -944,7 +946,8 @@ elif st.session_state.selected_project == "TE6":
     """,
         unsafe_allow_html=True,
     )
-    render_support_tree("te6_p1", "Siwa Microgrid Assessment and Smart Design", [
+    st.subheader("Siwa Microgrid Assessment and Smart Design")
+    render_supported_projects_card([
         "TE1: Technology Evaluation and Selection",
         "TE7: Energy Storage Pilots",
     ])
@@ -964,14 +967,11 @@ elif st.session_state.selected_project == "TE7":
     """,
         unsafe_allow_html=True,
     )
-    render_support_tree(
-        "te7_p1",
-        "BESS Assessment for a Weak Seasonal Network",
-        [
-            "TE1: Technology Evaluation and Selection",
-            "PS2: Technical Standards and Regulation",
-        ],
-    )
+    st.subheader("BESS Assessment for a Weak Seasonal Network")
+    render_supported_projects_card([
+        "TE1: Technology Evaluation and Selection",
+        "PS2: Technical Standards and Regulation",
+    ])
 
     st.markdown("""
     * **Purpose & Scope:** Assess storage for seasonal weak-network stability[cite: 4].
@@ -1000,14 +1000,22 @@ elif st.session_state.selected_project == "PS2":
     """,
         unsafe_allow_html=True,
     )
-    render_support_tree("ps2_p1", "Unified OBIS Code", [
-        "TE2: Integrated Solution Selection",
-        "IF4: Asset Management and Monitoring",
+
+    ps2_tab1, ps2_tab2 = st.tabs([
+        "📜 Unified OBIS Code",
+        "⚖️ Distribution Code Update",
     ])
-    st.write("")
-    render_support_tree("ps2_p2", "Distribution Code Update", [
-        "PS1: Policy and Regulatory Review"
-    ])
+
+    with ps2_tab1:
+        st.subheader("Unified OBIS Code")
+        render_supported_projects_card([
+            "TE2: Integrated Solution Selection",
+            "IF4: Asset Management and Monitoring",
+        ])
+
+    with ps2_tab2:
+        st.subheader("Distribution Code Update")
+        render_supported_projects_card(["PS1: Policy and Regulatory Review"])
 
 elif st.session_state.selected_project == "OS2":
     st.button(
@@ -1049,19 +1057,23 @@ elif st.session_state.selected_project == "OS4":
     """,
         unsafe_allow_html=True,
     )
-    render_support_tree("os4_p1", "Smart Grid Training Course", [
-        "Cross-Cutting Technical Capability"
+
+    os4_tab1, os4_tab2 = st.tabs([
+        "🎓 Smart Grid Training Course",
+        "✈️ BESS Study Tour & Capacity Building",
     ])
-    st.write("")
-    render_support_tree(
-        "os4_p2",
-        "BESS Capacity Building and Germany Study Tour",
-        [
+
+    with os4_tab1:
+        st.subheader("Smart Grid Training Course")
+        render_supported_projects_card(["Cross-Cutting Technical Capability"])
+
+    with os4_tab2:
+        st.subheader("BESS Capacity Building and Germany Study Tour")
+        render_supported_projects_card([
             "TE7: Energy Storage Pilots",
             "TE1: Technology Evaluation and Selection",
             "IF4: Asset Management and Monitoring",
-        ],
-    )
+        ])
 
 elif st.session_state.selected_project == "C2":
     st.button(
@@ -1078,9 +1090,8 @@ elif st.session_state.selected_project == "C2":
     """,
         unsafe_allow_html=True,
     )
-    render_support_tree("c2_p1", "Advanced Metering Infrastructure (AMI)", [
-        "C4: Advanced Smart Meter Analytics"
-    ])
+    st.subheader("Advanced Metering Infrastructure (AMI)")
+    render_supported_projects_card(["C4: Advanced Smart Meter Analytics"])
     st.markdown(
         "Link all smart meters precisely to their supply transformer and feeder topology[cite: 1]."
     )
