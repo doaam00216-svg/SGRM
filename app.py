@@ -456,6 +456,7 @@ with st.sidebar:
 
 # 6. Main Routing Logic
 if st.session_state.selected_project == "Dashboard Home":
+if st.session_state.selected_project == "Dashboard Home":
 
     st.markdown(
         """
@@ -479,7 +480,8 @@ if st.session_state.selected_project == "Dashboard Home":
             for proj in domain["projects"]:
                 is_active = proj.get("active", False)
                 icon = "🔵" if proj["type"] == "direct" else "⭕"
-  if is_active:
+
+                if is_active:
                     st.markdown(
                         '<div class="gis-highlight">', unsafe_allow_html=True
                     )
@@ -491,7 +493,6 @@ if st.session_state.selected_project == "Dashboard Home":
                     ):
                         select_project(proj["code"])
                         st.rerun()
-                    st.markdown("</div>", unsafe_allow_html=True)
                     st.markdown("</div>", unsafe_allow_html=True)
                 else:
                     if st.button(
@@ -517,6 +518,10 @@ if st.session_state.selected_project == "Dashboard Home":
             """,
                 unsafe_allow_html=True,
             )
+
+    st.caption(
+        "🔴 **⭕ 12 Support Projects** enable delivery | 🔵 **14 Direct Projects** deliver assessed benefits"
+    )
 
     st.caption(
         "🔴 **⭕ 12 Support Projects** enable delivery | 🔵 **14 Direct Projects** deliver assessed benefits"
