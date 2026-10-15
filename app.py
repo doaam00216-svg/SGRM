@@ -90,9 +90,9 @@ st.markdown(
         pointer-events: none;
         z-index: 0;
     }}
-    /* Main Roadmap Top Banner */
+    /* Main Roadmap Top Banner - Clearer Image Overlay */
     .roadmap-banner {{
-        background: linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(30,41,59,0.85) 100%), 
+        background: linear-gradient(135deg, rgba(15,23,42,0.30) 0%, rgba(30,41,59,0.30) 100%), 
                     url('data:image/png;base64,{eehc_b64}');
         background-repeat: no-repeat;
         background-position: center right;
@@ -108,13 +108,15 @@ st.markdown(
         font-size: 2.2rem;
         font-weight: 800;
         margin: 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.6);
     }}
     .roadmap-banner p {{
-        color: #475569 !important;
+        color: #FFFFFF !important;
         font-size: 1.05rem;
         font-weight: 700;
         margin-top: 6px;
         margin-bottom: 0;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.7);
     }}
     /* Project Header Banner */
     .project-banner {{
@@ -183,56 +185,55 @@ st.markdown(
         margin-bottom: 20px;
     }}
 
-    /* Non-Technical Executive Tree Visual Card */
-    .tree-card {{
-        background-color: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 12px;
-        padding: 18px 24px;
-        margin-top: 12px;
+    /* Supported Projects Layout Matching Image */
+    .sp-wrapper {{
+        position: relative;
+        margin-top: 10px;
         margin-bottom: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }}
-    .tree-title {{
-        display: inline-block;
-        border: 2px solid #991B1B;
-        color: #991B1B;
-        background-color: #FEF2F2;
+    .sp-header-badge {{
+        display: inline-flex;
+        align-items: center;
+        border: 2px solid #881337;
+        color: #881337;
+        background-color: #FFFFFF;
         border-radius: 20px;
-        padding: 6px 20px;
+        padding: 6px 18px;
         font-weight: 800;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         letter-spacing: 0.5px;
-        margin-bottom: 16px;
-    }}
-    .tree-branch-container {{
-        position: relative;
-        border-left: 3px solid #1E3A8A;
-        padding-left: 20px;
-        margin-left: 16px;
-    }}
-    .tree-item {{
-        position: relative;
         margin-bottom: 12px;
     }}
-    .tree-item::before {{
-        content: "";
-        position: absolute;
-        left: -20px;
-        top: 50%;
-        width: 16px;
-        height: 3px;
-        background-color: #1E3A8A;
+    .sp-card-body {{
+        position: relative;
+        border-left: 4px solid #1E3A8A;
+        background-color: #F8FAFC;
+        border-radius: 0 20px 20px 0;
+        padding: 24px 28px;
+        margin-left: 10px;
     }}
-    .tree-item-badge {{
-        display: inline-block;
-        border: 1px solid #BFDBFE;
-        color: #1E40AF;
-        background-color: #EFF6FF;
-        border-radius: 18px;
-        padding: 6px 18px;
+    .sp-row {{
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+    }}
+    .sp-row:last-child {{
+        margin-bottom: 0;
+    }}
+    .sp-arrow {{
+        color: #B91C1C;
+        font-size: 1.4rem;
+        font-weight: 900;
+        margin-right: 14px;
+    }}
+    .sp-pill {{
+        background-color: #FFE4E6;
+        color: #0F172A;
+        border-radius: 10px;
+        padding: 8px 18px;
+        font-size: 0.95rem;
         font-weight: 700;
-        font-size: 0.88rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }}
     </style>
 """,
@@ -240,24 +241,25 @@ st.markdown(
 )
 
 
-# Non-technical visual tree component for supported projects
+# Helper function to render supported projects matching the reference image layout
 def render_supported_projects_card(supported_list):
-    tree_html = """
-    <div class="tree-card">
-        <div class="tree-title">🎯 SUPPORTED PROJECTS</div>
-        <div class="tree-branch-container">
+    html = """
+    <div class="sp-wrapper">
+        <div class="sp-header-badge">🎯 SUPPORTED PROJECTS</div>
+        <div class="sp-card-body">
     """
     for item in supported_list:
-        tree_html += f"""
-            <div class="tree-item">
-                <div class="tree-item-badge">{item}</div>
+        html += f"""
+            <div class="sp-row">
+                <span class="sp-arrow">➔</span>
+                <span class="sp-pill">{item}</span>
             </div>
         """
-    tree_html += """
+    html += """
         </div>
     </div>
     """
-    st.markdown(tree_html, unsafe_allow_html=True)
+    st.markdown(html, unsafe_allow_html=True)
 
 
 # 3. Roadmap Data
@@ -555,7 +557,7 @@ elif st.session_state.selected_project == "IF1":
     with if1_tab1:
         st.subheader("250,000 Smart-Meter Pilot")
         render_supported_projects_card([
-            "C2: Advanced Meter Infrastructure (AMI) Lessons Learned",
+            "C2: AMI Lessons Learned",
             "TE2: Integrated Solution Selection",
         ])
 
