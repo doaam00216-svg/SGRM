@@ -831,6 +831,7 @@ elif st.session_state.selected_project == "TE2":
        display_centered_image(
             "images/08_Fleet_and_Field_Workforce_Management",
             caption="DCC Coordinated Network Operation Model",
+            width=550,
         )
 
 elif st.session_state.selected_project == "TE3":
