@@ -689,7 +689,7 @@ elif st.session_state.selected_project == "IF2":
     with t4:
         st.subheader("Continuous Update & Monitoring Workflow")
         st.info(
-            "Field change ➔ DISCO Verification ➔ Joint Acceptance QA Checklist ➔ Publish in SQL/GIS"
+            "Field change ➔ DISCO Verification ➔ Joint Acceptance QA Checklist ➔ Publish in SQL/GIS[cite: 1]"
         )
 
 elif st.session_state.selected_project == "IF3":
@@ -729,7 +729,7 @@ elif st.session_state.selected_project == "IF4":
     with col1:
         st.markdown("##### 1. Low Voltage (LV) Network Mapping")
         st.markdown(
-            "Extend accepted MV records down to all LV components and customer service links."
+            "Extend accepted MV records down to all LV components and customer service links[cite: 1]."
         )
         display_safe_image(
             "images/06_LV_network_expansion",
@@ -738,7 +738,7 @@ elif st.session_state.selected_project == "IF4":
     with col2:
         st.markdown("##### 2. Asset Management and Maintenance")
         st.markdown(
-            "Link mapped components to condition status, inspection logs, and SQL work orders."
+            "Link mapped components to condition status, inspection logs, and SQL work orders[cite: 1]."
         )
         display_safe_image(
             "images/07_Asset_Management_and_Maintenance",
@@ -793,7 +793,7 @@ elif st.session_state.selected_project == "TE2":
         with col1:
             st.markdown("##### ADMS and Restoration Automation")
             st.markdown(
-                "Use maintained GIS topology inside Advanced Distribution Management Systems for automated switching."
+                "Use maintained GIS topology inside Advanced Distribution Management Systems for automated switching[cite: 1]."
             )
             display_safe_image(
                 "images/14_ADMS_and_Restoration_Automation",
@@ -802,7 +802,7 @@ elif st.session_state.selected_project == "TE2":
         with col2:
             st.markdown("##### Outage Management System (OMS)")
             st.markdown(
-                "Link customer incidents to affected grid feeder areas for faster restoration."
+                "Link customer incidents to affected grid feeder areas for faster restoration[cite: 1]."
             )
             display_safe_image(
                 "images/09_Outage_Management_System",
@@ -844,7 +844,7 @@ elif st.session_state.selected_project == "TE2":
         | **Phase 3 Feasibility** | 26 July, Beheira, East Alexandria, South Delta (after Minia signing), North & South El Sharkia, West Alexandria, Bani Suef, Damietta, Luxor & Aswan, Sohag[cite: 4] |
         """)
 
-display_safe_image(
+        display_safe_image(
             "images/08_Fleet_and_Field_Workforce_Management",
             caption="DCC Coordinated Network Operation Model",
         )
@@ -866,7 +866,7 @@ elif st.session_state.selected_project == "TE3":
     )
     st.markdown("##### Loss Analysis and Energy Cost Visibility")
     st.markdown(
-        "Compare energy across feeder, transformer, and customer boundaries to locate losses."
+        "Compare energy across feeder, transformer, and customer boundaries to locate losses[cite: 1]."
     )
     display_centered_image(
         "images/10_Loss_Analysis_and_Energy_Cost_Visibility",
@@ -921,7 +921,7 @@ elif st.session_state.selected_project == "TE5":
     )
     st.markdown("##### Voltage Optimization and Peak Management")
     st.markdown(
-        "Study volt/VAR control options across distribution feeders."
+        "Study volt/VAR control options across distribution feeders[cite: 1]."
     )
     display_centered_image(
         "images/15_Voltage_Optimization_and_Peak_Management",
@@ -1032,7 +1032,7 @@ elif st.session_state.selected_project == "OS2":
     )
     st.markdown("##### Fleet and Field Workforce Management")
     st.markdown(
-        "Route maintenance crews dynamically against network outage points."
+        "Route maintenance crews dynamically against network outage points[cite: 1]."
     )
     display_centered_image(
         "images/08_Fleet_and_Field_Workforce_Management",
@@ -1091,7 +1091,7 @@ elif st.session_state.selected_project == "C2":
     st.subheader("Advanced Metering Infrastructure (AMI)")
     render_supported_projects_card(["C4: Advanced Smart Meter Analytics"])
     st.markdown(
-        "Link all smart meters precisely to their supply transformer and feeder topology."
+        "Link all smart meters precisely to their supply transformer and feeder topology[cite: 1]."
     )
     display_centered_image(
         "images/16_Advanced_Metering_Infrastructure_Integration",
