@@ -185,7 +185,7 @@ st.markdown(
         margin-bottom: 20px;
     }}
 
-    /* Supported Projects Layout Matching Image */
+    /* Supported Projects Layout Matching Reference Image */
     .sp-wrapper {{
         position: relative;
         margin-top: 10px;
@@ -241,25 +241,21 @@ st.markdown(
 )
 
 
-# Helper function to render supported projects matching the reference image layout
+# Fixed helper function to properly render HTML with unsafe_allow_html=True
 def render_supported_projects_card(supported_list):
-    html = """
+    rows_html = "".join([
+        f'<div class="sp-row"><span class="sp-arrow">➔</span><span class="sp-pill">{item}</span></div>'
+        for item in supported_list
+    ])
+    full_html = f"""
     <div class="sp-wrapper">
         <div class="sp-header-badge">🎯 SUPPORTED PROJECTS</div>
         <div class="sp-card-body">
-    """
-    for item in supported_list:
-        html += f"""
-            <div class="sp-row">
-                <span class="sp-arrow">➔</span>
-                <span class="sp-pill">{item}</span>
-            </div>
-        """
-    html += """
+            {rows_html}
         </div>
     </div>
     """
-    st.markdown(html, unsafe_allow_html=True)
+    st.markdown(full_html, unsafe_allow_html=True)
 
 
 # 3. Roadmap Data
