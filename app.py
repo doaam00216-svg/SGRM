@@ -324,7 +324,6 @@ DOMAINS = [
                 "name": "Asset management design and implementation",
                 "type": "support",
                 "active": True,
-                "tag": "Includes GIS",
             },
             {
                 "code": "IF3",
