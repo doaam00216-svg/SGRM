@@ -844,7 +844,10 @@ elif st.session_state.selected_project == "TE2":
         | **Phase 3 Feasibility** | 26 July, Beheira, East Alexandria, South Delta (after Minia signing), North & South El Sharkia, West Alexandria, Bani Suef, Damietta, Luxor & Aswan, Sohag[cite: 4] |
         """)
 
-display_centered_image("images/08_Fleet_and_Field_Workforce_Management", caption="DCC Coordinated Network Operation Model", width=550)
+display_safe_image(
+            "images/08_Fleet_and_Field_Workforce_Management",
+            caption="DCC Coordinated Network Operation Model",
+        )
 
 elif st.session_state.selected_project == "TE3":
     st.button(
