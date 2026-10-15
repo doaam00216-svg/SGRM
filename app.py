@@ -689,7 +689,7 @@ elif st.session_state.selected_project == "IF2":
     with t4:
         st.subheader("Continuous Update & Monitoring Workflow")
         st.info(
-            "Field change ➔ DISCO Verification ➔ Joint Acceptance QA Checklist ➔ Publish in SQL/GIS[cite: 1]"
+            "Field change ➔ DISCO Verification ➔ Joint Acceptance QA Checklist ➔ Publish in SQL/GIS"
         )
 
 elif st.session_state.selected_project == "IF3":
@@ -729,7 +729,7 @@ elif st.session_state.selected_project == "IF4":
     with col1:
         st.markdown("##### 1. Low Voltage (LV) Network Mapping")
         st.markdown(
-            "Extend accepted MV records down to all LV components and customer service links[cite: 1]."
+            "Extend accepted MV records down to all LV components and customer service links."
         )
         display_safe_image(
             "images/06_LV_network_expansion",
@@ -738,7 +738,7 @@ elif st.session_state.selected_project == "IF4":
     with col2:
         st.markdown("##### 2. Asset Management and Maintenance")
         st.markdown(
-            "Link mapped components to condition status, inspection logs, and SQL work orders[cite: 1]."
+            "Link mapped components to condition status, inspection logs, and SQL work orders."
         )
         display_safe_image(
             "images/07_Asset_Management_and_Maintenance",
@@ -793,7 +793,7 @@ elif st.session_state.selected_project == "TE2":
         with col1:
             st.markdown("##### ADMS and Restoration Automation")
             st.markdown(
-                "Use maintained GIS topology inside Advanced Distribution Management Systems for automated switching[cite: 1]."
+                "Use maintained GIS topology inside Advanced Distribution Management Systems for automated switching."
             )
             display_safe_image(
                 "images/14_ADMS_and_Restoration_Automation",
@@ -802,7 +802,7 @@ elif st.session_state.selected_project == "TE2":
         with col2:
             st.markdown("##### Outage Management System (OMS)")
             st.markdown(
-                "Link customer incidents to affected grid feeder areas for faster restoration[cite: 1]."
+                "Link customer incidents to affected grid feeder areas for faster restoration."
             )
             display_safe_image(
                 "images/09_Outage_Management_System",
@@ -866,7 +866,7 @@ elif st.session_state.selected_project == "TE3":
     )
     st.markdown("##### Loss Analysis and Energy Cost Visibility")
     st.markdown(
-        "Compare energy across feeder, transformer, and customer boundaries to locate losses[cite: 1]."
+        "Compare energy across feeder, transformer, and customer boundaries to locate losses."
     )
     display_centered_image(
         "images/10_Loss_Analysis_and_Energy_Cost_Visibility",
@@ -921,7 +921,7 @@ elif st.session_state.selected_project == "TE5":
     )
     st.markdown("##### Voltage Optimization and Peak Management")
     st.markdown(
-        "Study volt/VAR control options across distribution feeders[cite: 1]."
+        "Study volt/VAR control options across distribution feeders."
     )
     display_centered_image(
         "images/15_Voltage_Optimization_and_Peak_Management",
@@ -1032,7 +1032,7 @@ elif st.session_state.selected_project == "OS2":
     )
     st.markdown("##### Fleet and Field Workforce Management")
     st.markdown(
-        "Route maintenance crews dynamically against network outage points[cite: 1]."
+        "Route maintenance crews dynamically against network outage points."
     )
     display_centered_image(
         "images/08_Fleet_and_Field_Workforce_Management",
@@ -1091,7 +1091,7 @@ elif st.session_state.selected_project == "C2":
     st.subheader("Advanced Metering Infrastructure (AMI)")
     render_supported_projects_card(["C4: Advanced Smart Meter Analytics"])
     st.markdown(
-        "Link all smart meters precisely to their supply transformer and feeder topology[cite: 1]."
+        "Link all smart meters precisely to their supply transformer and feeder topology."
     )
     display_centered_image(
         "images/16_Advanced_Metering_Infrastructure_Integration",
