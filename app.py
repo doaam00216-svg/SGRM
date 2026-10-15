@@ -507,10 +507,6 @@ if st.session_state.selected_project == "Dashboard Home":
         "🔴 **⭕ 12 Support Projects** enable delivery | 🔵 **14 Direct Projects** deliver assessed benefits"
     )
 
-    st.caption(
-        "🔴 **⭕ 12 Support Projects** enable delivery | 🔵 **14 Direct Projects** deliver assessed benefits"
-    )
-
 elif st.session_state.selected_project == "IF1":
     st.button(
         "← Back to Roadmap Dashboard",
