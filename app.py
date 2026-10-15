@@ -827,8 +827,9 @@ elif st.session_state.selected_project == "TE2":
         | **Construction / Procurement** | Sharm El Sheikh (Construction), Helmeya (Construction), El Minia (Contracting), Ismailia & New Cities, Supervisory (Tendering)[cite: 4] |
         | **Phase 3 Feasibility** | 26 July, Beheira, East Alexandria, South Delta (after Minia signing), North & South El Sharkia, West Alexandria, Bani Suef, Damietta, Luxor & Aswan, Sohag[cite: 4] |
         """)
-
-       display_centered_image(
+        
+        st.write("")
+        display_centered_image(
             "images/08_Fleet_and_Field_Workforce_Management",
             caption="DCC Coordinated Network Operation Model",
             width=550,
