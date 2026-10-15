@@ -455,7 +455,7 @@ with st.sidebar:
                     st.rerun()
 
 # 6. Main Routing Logic
-if st.session_state.selected_project == "Dashboard Home":
+
     
 if st.session_state.selected_project == "Dashboard Home":
 
