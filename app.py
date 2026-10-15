@@ -479,14 +479,9 @@ if st.session_state.selected_project == "Dashboard Home":
             for proj in domain["projects"]:
                 is_active = proj.get("active", False)
                 icon = "🔵" if proj["type"] == "direct" else "⭕"
-
-                if is_active:
+  if is_active:
                     st.markdown(
                         '<div class="gis-highlight">', unsafe_allow_html=True
-                    )
-                    st.markdown(
-                        f"<span style='color:#2563EB; font-size:0.7rem; font-weight:800; float:right;'>{proj['tag']}</span>",
-                        unsafe_allow_html=True,
                     )
                     if st.button(
                         f"{icon} **{proj['code']}** - {proj['name']}",
@@ -496,6 +491,7 @@ if st.session_state.selected_project == "Dashboard Home":
                     ):
                         select_project(proj["code"])
                         st.rerun()
+                    st.markdown("</div>", unsafe_allow_html=True)
                     st.markdown("</div>", unsafe_allow_html=True)
                 else:
                     if st.button(
