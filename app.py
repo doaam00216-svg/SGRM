@@ -612,7 +612,7 @@ elif st.session_state.selected_project == "IF2":
         with col1:
             st.markdown("##### 1. Established Central GIS Foundation")
             st.markdown("""
-            * **Platform Upgrade:** Upgraded Enterprise & ArcGIS Pro installed at EEHC data center[cite: 1].
+            * **Platform Upgrade:** Upgraded Enterprise & ArcGIS Pro installed at EEHC data center.
             * **SQL Link:** Direct SQL–GIS connection with common asset IDs and symbology[cite: 1].
             * **Proof of Connection:** Smouha pilot completed with 7-person trained R&D team[cite: 1].
             """)
