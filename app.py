@@ -580,13 +580,13 @@ elif st.session_state.selected_project == "IF2":
         c1, c2 = st.columns(2)
         with c1:
             st.markdown("""
-            * **Unified Network Record:** Nine DISCOs operating on one common standard model[cite: 1].
-            * **Trusted Network Data:** Verified geographic locations and stable asset identities[cite: 1].
+            * **Unified Network Record:** Nine DISCOs operating on one common standard model.
+            * **Trusted Network Data:** Verified geographic locations and stable asset identities.
             """)
         with c2:
             st.markdown("""
-            * **Continuous Updates:** Workflow covering field capture ➔ verify ➔ approve ➔ publish[cite: 1].
-            * **Sector Applications:** Powering asset management, operations, OMS, and grid planning[cite: 1].
+            * **Continuous Updates:** Workflow covering field capture ➔ verify ➔ approve ➔ publish.
+            * **Sector Applications:** Powering asset management, operations, OMS, and grid planning.
             """)
 
         st.write("")
@@ -613,8 +613,8 @@ elif st.session_state.selected_project == "IF2":
             st.markdown("##### 1. Established Central GIS Foundation")
             st.markdown("""
             * **Platform Upgrade:** Upgraded Enterprise & ArcGIS Pro installed at EEHC data center.
-            * **SQL Link:** Direct SQL–GIS connection with common asset IDs and symbology[cite: 1].
-            * **Proof of Connection:** Smouha pilot completed with 7-person trained R&D team[cite: 1].
+            * **SQL Link:** Direct SQL–GIS connection with common asset IDs and symbology.
+            * **Proof of Connection:** Smouha pilot completed with 7-person trained R&D team.
             """)
             display_safe_image(
                 "images/02_Established_central_GIS_foundation",
@@ -624,9 +624,9 @@ elif st.session_state.selected_project == "IF2":
         with col2:
             st.markdown("##### 2. MV Network Drawing & Acceptance")
             st.markdown("""
-            * **Delivery Method:** Smouha method ➔ 1 pilot per DISCO ➔ Full MV network[cite: 1].
-            * **Target Date:** June 2027[cite: 1].
-            * **Outcome:** Accepted MV components with verified coordinates & connectivity[cite: 1].
+            * **Delivery Method:** Smouha method ➔ 1 pilot per DISCO ➔ Full MV network.
+            * **Target Date:** June 2027.
+            * **Outcome:** Accepted MV components with verified coordinates & connectivity.
             """)
             display_safe_image(
                 "images/03_MV_network_drawing_and_acceptance",
@@ -640,8 +640,8 @@ elif st.session_state.selected_project == "IF2":
                 "##### 3. Continuous Updates & Monitoring Dashboard"
             )
             st.markdown("""
-            * **Workflow:** Field Change ➔ Verify ➔ Approve ➔ Publish in SQL/GIS[cite: 1].
-            * **Monitoring:** Executive dashboards showing accepted coverage, exceptions, and backlog[cite: 1].
+            * **Workflow:** Field Change ➔ Verify ➔ Approve ➔ Publish in SQL/GIS.
+            * **Monitoring:** Executive dashboards showing accepted coverage, exceptions, and backlog.
             """)
             display_safe_image(
                 "images/04_Continuous_updates_and_rollout_monitoring",
@@ -651,7 +651,7 @@ elif st.session_state.selected_project == "IF2":
         with col4:
             st.markdown("##### 4. Alexandria Region Integrated Output")
             st.markdown("""
-            * **Integrated Grid Example:** Located components, connected MV feeders, and shared asset IDs across DISCOs[cite: 1].
+            * **Integrated Grid Example:** Located components, connected MV feeders, and shared asset IDs across DISCOs.
             """)
             display_safe_image(
                 "images/05_Expected_short_term_network_record",
@@ -661,9 +661,9 @@ elif st.session_state.selected_project == "IF2":
     with t3:
         st.subheader("Three Integration Routes for DISCOs")
         st.markdown("""
-        1. **Established GIS:** Map IDs and schema, retain local tools, synchronize approved updates to SQL[cite: 1].
-        2. **Partial / Fragmented GIS:** Consolidate existing work, fill survey gaps, supply equipment and training[cite: 1].
-        3. **No GIS:** Survey components from scratch, build local team capacity, utilize central platform[cite: 1].
+        1. **Established GIS:** Map IDs and schema, retain local tools, synchronize approved updates to SQL.
+        2. **Partial / Fragmented GIS:** Consolidate existing work, fill survey gaps, supply equipment and training.
+        3. **No GIS:** Survey components from scratch, build local team capacity, utilize central platform.
         """)
 
     with t4:
@@ -809,19 +809,19 @@ elif st.session_state.selected_project == "TE2":
         ])
 
         st.markdown("""
-        * **Purpose & Scope:** Coordinated network operation across DCCs[cite: 4].
-        * **Progress & Milestone:** Seven listed DCCs completed[cite: 4]. Advance remaining packages[cite: 4].
-        * **Sector Value:** Service continuity[cite: 4]. Measure restoration performance[cite: 4].
-        * **Resources & Decision:** Operators, communications, and integration[cite: 4]. Confirm next-stage readiness[cite: 4].
+        * **Purpose & Scope:** Coordinated network operation across DCCs.
+        * **Progress & Milestone:** Seven listed DCCs completed. Advance remaining packages.
+        * **Sector Value:** Service continuity. Measure restoration performance.
+        * **Resources & Decision:** Operators, communications, and integration. Confirm next-stage readiness.
         """)
 
         st.markdown("##### DCC Delivery Stages Table")
         st.markdown("""
-        | Stage | Regional Locations & Status[cite: 4] |
+        | Stage | Regional Locations & Status |
         | :--- | :--- |
-        | **Completed** | Nasr City, El Mansoura, Dokki, 6 October[cite: 4] |
-        | **Construction / Procurement** | Sharm El Sheikh (Construction), Helmeya (Construction), El Minia (Contracting), Ismailia & New Cities, Supervisory (Tendering)[cite: 4] |
-        | **Phase 3 Feasibility** | 26 July, Beheira, East Alexandria, South Delta (after Minia signing), North & South El Sharkia, West Alexandria, Bani Suef, Damietta, Luxor & Aswan, Sohag[cite: 4] |
+        | **Completed** | Nasr City, El Mansoura, Dokki, 6 October  |
+        | **Construction / Procurement** | Sharm El Sheikh (Construction), Helmeya (Construction), El Minia (Contracting), Ismailia & New Cities, Supervisory (Tendering) |
+        | **Phase 3 Feasibility** | 26 July, Beheira, East Alexandria, South Delta (after Minia signing), North & South El Sharkia, West Alexandria, Bani Suef, Damietta, Luxor & Aswan, Sohag |
         """)
         
         st.write("")
@@ -954,10 +954,10 @@ elif st.session_state.selected_project == "TE7":
     ])
 
     st.markdown("""
-    * **Purpose & Scope:** Assess storage for seasonal weak-network stability[cite: 4].
-    * **Progress & Next Milestone:** Assessment initiative[cite: 4]. Validate studies and compare options[cite: 4].
-    * **Sector Value:** A justified investment based on measured needs[cite: 4].
-    * **Resources & Decision:** Feeder data and specialist teams[cite: 4]. Agree on study scope[cite: 4].
+    * **Purpose & Scope:** Assess storage for seasonal weak-network stability.
+    * **Progress & Next Milestone:** Assessment initiative. Validate studies and compare options.
+    * **Sector Value:** A justified investment based on measured needs.
+    * **Resources & Decision:** Feeder data and specialist teams. Agree on study scope.
     """)
     display_centered_image(
         "images/13_Battery_Energy_Storage_for_Grid_Support",
